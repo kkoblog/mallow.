@@ -119,14 +119,14 @@ function MainComponent() {
     rootMargin: '-50px'
   }));
 
-  // 各セクションのIntersectionObserver設定
+  // アニメーション用のIntersectionObserver設定を確認
   const [contentRef, contentInView] = useInView({
     triggerOnce: true,
-    threshold: 0.2,
+    threshold: 0.1, // より早くトリガーされるように閾値を下げる
     rootMargin: '-50px'
   });
 
-  // アニメーション用の共通クラス定義
+  // アニメーションクラスの定義を確認
   const fadeInUpClass = 'transition-all duration-1000 ease-out';
   const fadeInUpAnimation = (inView) => 
     `${fadeInUpClass} ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`;
@@ -249,9 +249,27 @@ function MainComponent() {
                   そんな世界観を共に創っていただけませんか
                 </p>
                 
-                <p className="text-lg md:text-3xl font-medium opacity-0 animate-fade-in">
-                  女性専用サロン <span className="inline-block">michill（ミチル）</span>
-                </p>
+                <div className="relative">
+                  <p className="text-2xl md:text-4xl lg:text-5xl font-medium opacity-0 blur-sm" id="blurText">
+                    女性専用サロン <span className="inline-block">michill（ミチル）</span>
+                  </p>
+                  <style jsx>{`
+                    #blurText {
+                      animation: blurReveal 2s ease-out 2s forwards;
+                    }
+                    
+                    @keyframes blurReveal {
+                      0% {
+                        opacity: 0;
+                        filter: blur(10px);
+                      }
+                      100% {
+                        opacity: 1;
+                        filter: blur(0);
+                      }
+                    }
+                  `}</style>
+                </div>
               </div>
             </div>
           </div>
@@ -388,13 +406,15 @@ function MainComponent() {
           title="michillで働くことで得られること"
           subtitle="あなたらしい働き方"
         />
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto px-4">
           <div 
             ref={contentRef}
-            className={`grid gap-6 md:gap-8 mb-8 ${fadeInUpAnimation(contentInView)}`}
+            className="space-y-8"
           >
             <div 
-              className={`bg-white p-8 rounded-lg shadow ${fadeInUpClass}`}
+              className={`bg-white p-8 rounded-lg shadow transition-all duration-700 ${
+                contentInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
               style={{ transitionDelay: '100ms' }}
             >
               <h3 className="text-2xl mb-4 font-bold">
@@ -420,7 +440,9 @@ function MainComponent() {
             </div>
 
             <div 
-              className={`bg-white p-8 rounded-lg shadow ${fadeInUpClass}`}
+              className={`bg-white p-8 rounded-lg shadow transition-all duration-700 ${
+                contentInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
               style={{ transitionDelay: '200ms' }}
             >
               <h3 className="text-2xl mb-4 font-bold">
@@ -447,7 +469,9 @@ function MainComponent() {
             </div>
 
             <div 
-              className={`bg-white p-8 rounded-lg shadow ${fadeInUpClass}`}
+              className={`bg-white p-8 rounded-lg shadow transition-all duration-700 ${
+                contentInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+              }`}
               style={{ transitionDelay: '300ms' }}
             >
               <h3 className="text-2xl mb-4 font-bold">
@@ -486,7 +510,7 @@ function MainComponent() {
       <section className="py-16 md:py-24">
         <SectionHeader 
           title="スタッフ紹介"
-          subtitle="＝"
+          subtitle="働く仲間"
         />
         <div className="max-w-3xl mx-auto px-4">
           <div className="space-y-8">
