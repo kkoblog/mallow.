@@ -363,36 +363,35 @@ function MainComponent() {
 
             <div className="bg-white/60 rounded-lg p-4 shadow-sm">
               ①平均18,000円の高単価サロンで
-              <br className="sm:hidden" />
+              <br />
               年齢を重ねた接客がむしろ強みに
-              <br className="sm:hidden" />
-              
-              <br className="sm:hidden" />
+              <br />
+              <br />
               お客様の年齢層も40代以降の方が多いため
-              <br className="sm:hidden" />
+              <br />
               担当する美容師も40代以降ですと安心感を持たれます
 
             </div>
 
             <div className="bg-white/60 rounded-lg p-4 shadow-sm">
               ②ゆとりある働き方
-              <br className="sm:hidden" />
-              <br className="sm:hidden" />
+              <br />
+              <br />
               1日に何名もこなさずに済み
-              <br className="sm:hidden" />
+              <br />
               いつまでも現役美容師として美しく働ける
             </div>
 
             <div className="bg-white/60 rounded-lg p-4 shadow-sm">
               ③現場仕事だけでない「複数キャリア」の推進
-              <br className="sm:hidden" />
-              <br className="sm:hidden" />
+              <br />
+              <br />
               美容業界では珍しい
-              <br className="sm:hidden" />
-             　メーカー・商品開発・企画広報部、在宅仕事など
-             <br className="sm:hidden" />
-            急な家族トラブルや体調の揺らぎにも
-            <br className="sm:hidden" />
+              <br />
+              メーカー・商品開発・企画広報部、在宅仕事など
+              <br />
+              急な家族トラブルや体調の揺らぎにも
+              <br />
               対応できるよう活躍の場を用意しています
             </div>
 
