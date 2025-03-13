@@ -272,6 +272,76 @@ function MainComponent() {
     rootMargin: '-50px'
   });
 
+  // アニメーション制御用のstateを追加
+  const [startAnimation, setStartAnimation] = useState(false);
+
+  // contentInViewが変更されたときに1秒後にアニメーションを開始
+  useEffect(() => {
+    if (contentInView) {
+      const timer = setTimeout(() => {
+        setStartAnimation(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else {
+      setStartAnimation(false);
+    }
+  }, [contentInView]);
+
+  // 各セクション用のアニメーション制御stateを追加
+  const [startAnimation1, setStartAnimation1] = useState(false);
+  const [startAnimation2, setStartAnimation2] = useState(false);
+  const [startAnimation3, setStartAnimation3] = useState(false);
+
+  // 各セクションのIntersectionObserver設定
+  const [section1Ref, section1InView] = useInView({
+    triggerOnce: false,
+    threshold: 0.3,
+  });
+
+  const [section2Ref, section2InView] = useInView({
+    triggerOnce: false,
+    threshold: 0.3,
+  });
+
+  const [section3Ref, section3InView] = useInView({
+    triggerOnce: false,
+    threshold: 0.3,
+  });
+
+  // 各セクションが表示されたときに1秒後にアニメーションを開始
+  useEffect(() => {
+    if (section1InView) {
+      const timer = setTimeout(() => {
+        setStartAnimation1(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else {
+      setStartAnimation1(false);
+    }
+  }, [section1InView]);
+
+  useEffect(() => {
+    if (section2InView) {
+      const timer = setTimeout(() => {
+        setStartAnimation2(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else {
+      setStartAnimation2(false);
+    }
+  }, [section2InView]);
+
+  useEffect(() => {
+    if (section3InView) {
+      const timer = setTimeout(() => {
+        setStartAnimation3(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else {
+      setStartAnimation3(false);
+    }
+  }, [section3InView]);
+
   const RequirementSection = () => {
     const requirements = [
       {
@@ -389,9 +459,7 @@ function MainComponent() {
             >
               応募する
             </Link>
-            <button className="bg-[#06c755] text-white px-6 py-3 rounded-full hover:bg-[#059144] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0">
-            最近入社　なつみさんからのメッセージを見る
-            </button>
+            
           </div>
         </div>
       </section>
@@ -423,19 +491,19 @@ function MainComponent() {
             <div className="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center">
               <div className="text-white px-4 md:px-8 text-center space-y-8">
                 <p className="text-base md:text-2xl font-medium mb-6 opacity-0 animate-[fadeInUp_1s_ease-out_0.5s_forwards]">
-                  1年後、お客様から必要とされ<br />
-                  5年後、地域から必要とされ<br />
-                  10年後は未来から必要とされる美容師へ。
+                  ＝＝＝＝＝＝＝＝<br />
+                  ＝＝＝＝＝＝＝＝<br />
+                  ＝＝＝＝＝＝＝＝
                 </p>
                 
                 <p className="text-base md:text-xl leading-relaxed max-w-2xl mx-auto mb-6 opacity-0 animate-[fadeInUp_1s_ease-out_1.5s_forwards]">
-                  月が満ち、地域が満ち、女性が満ちる、<br />
-                  そんな世界観を共に創っていただけませんか
+                  ＝＝＝＝＝＝＝<br />
+                  ＝＝＝＝＝＝＝＝＝
                 </p>
                 
                 <div className="relative">
                   <p className="text-2xl md:text-4xl lg:text-5xl font-medium opacity-0 blur-sm" id="blurText">
-                    <span className="inline-block">女性専用サロン michill（ミチル）</span>
+                    <span className="inline-block">花屋併設の美容院 mallow（マロウ）</span>
                   </p>
                   <style jsx>{`
                     #blurText {
@@ -461,32 +529,6 @@ function MainComponent() {
         
       </header>
 
-      <div className="text-center mt-8 mb-4">
-        <p className="text-lg text-gray-700 font-medium">
-          他2店舗でも同条件でスタッフ２名ずつ募集しております
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-4">
-          <a 
-            href="https://www.instagram.com/rubadub1109?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-[#D3B58D] text-white px-6 py-3 rounded-full hover:bg-[#c4a27a] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0 flex items-center gap-2 shadow-sm"
-          >
-            <i className="fab fa-instagram"></i>
-            守山区のRubaDub
-          </a>
-          <a 
-            href="https://www.instagram.com/comachi_color?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-[#D3B58D] text-white px-6 py-3 rounded-full hover:bg-[#c4a27a] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0 flex items-center gap-2 shadow-sm"
-          >
-            <i className="fab fa-instagram"></i>
-            大曽根のcomachi
-          </a>
-        </div>
-      </div>
-
       <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-8">
         <Link 
           href="/contact" 
@@ -495,13 +537,13 @@ function MainComponent() {
           応募する
         </Link>
         <button className="bg-[#06c755] text-white px-6 py-3 rounded-full hover:bg-[#059144] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0">
-          代表ロニーからのメッセージを見る
+          代表永田からのメッセージを見る
         </button>
       </div>
 
       <div className="mt-8 md:mt-12 px-4 max-w-6xl mx-auto">
         <Image
-          src="/image/zentai.png"
+          src="/image/zentai.jpg"
           alt="説明的な代替テキスト"
           width={1200}
           height={800}
@@ -541,7 +583,7 @@ function MainComponent() {
 
             {/* 右側: michillでの解決策 */}
             <div className="p-2 md:p-6 rounded-lg">
-              <h3 className="text-base md:text-xl font-bold text-center mb-3 md:mb-6 text-[#D3B58D]">＜michillの場合＞</h3>
+              <h3 className="text-base md:text-xl font-bold text-center mb-3 md:mb-6 text-[#D3B58D]">＜mallowの場合＞</h3>
               <div className="flex flex-col items-center gap-2 md:gap-4">
                 {[
                   "平均18,000円以上の高単価サロンでゆとりある予約状況✨",
@@ -574,7 +616,7 @@ function MainComponent() {
         
         <div className="relative z-10">
           <h3 className="text-xl md:text-3xl font-bold text-center mb-6">
-            <span className="text-[#D3B58D]">michillの特徴</span>
+            <span className="text-[#D3B58D]">mallowの特徴</span>
             <br className="md:hidden" />
           </h3>
 
@@ -602,15 +644,11 @@ function MainComponent() {
               style={{ transitionDelay: '100ms' }}
             >
               <span className="text-[#D3B58D] font-bold text-lg">①</span>
-              平均18,000円の高単価サロンで
-              <br />
-              年齢を重ねた接客がむしろ強みに
+              365日季節のお花に囲まれた、心安らぐ癒しの空間
               <br />
               <br />
               <span className="text-gray-700 text-sm md:text-base">
-                お客様の年齢層も40代以降の方が多いため
-                <br />
-                担当する美容師も40代以降ですと安心感を持たれます
+                名古屋唯一の花屋併設美容院として、季節のお花に囲まれながら施術ができます。お花好きのお客様との自然な会話が生まれ、癒しの空間で心地よく働けます。お花に魅かれて来店されるお客様も多く、まるでお花カフェのような温かな雰囲気の中で、新しい美容師ライフをスタートできます。
               </span>
             </div>
 
@@ -621,13 +659,11 @@ function MainComponent() {
               style={{ transitionDelay: '300ms' }}
             >
               <span className="text-[#D3B58D] font-bold text-lg">②</span>
-              ゆとりある働き方
+              互いを認め合える、優しい仲間たち
               <br />
               <br />
               <span className="text-gray-700 text-sm md:text-base">
-                1日に何名もこなさずに済み
-                <br />
-                いつまでも現役美容師として美しく働ける
+                「誰かを批判するのではなく、いいところを見つけよう」という文化が根付いています。平均単価15,000円以上の安定した環境で、焦ることなく成長できます。新人教育も丁寧で、先輩からの過度な監視や重圧を感じることなく、安心して技術を磨けます。
               </span>
             </div>
 
@@ -638,17 +674,11 @@ function MainComponent() {
               style={{ transitionDelay: '500ms' }}
             >
               <span className="text-[#D3B58D] font-bold text-lg">③</span>
-              現場仕事だけでない「複数キャリア」の推進
+              推しのために休める、充実の休暇制度
               <br />
               <br />
               <span className="text-gray-700 text-sm md:text-base">
-                美容業界では珍しい
-                <br />
-                メーカー・商品開発・企画広報部、在宅仕事など
-                <br />
-                急な家族トラブルや体調の揺らぎにも
-                <br />
-                対応できるよう活躍の場を用意しています
+                年間3〜4回のライブ参加ok！完全週休2日制と自由休暇5日でしっかりサポート。「推しのライブには行け」は当サロンの10か条の一つです。プライベートも仕事も大切にできる、あなたの理想の働き方を実現できます。
               </span>
             </div>
           </div>
@@ -657,7 +687,7 @@ function MainComponent() {
 
       <section className="py-16 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5">
         <SectionHeader 
-          title="michillで働くことで得られる事"
+          title="mallowで働くことで得られる事"
           subtitle="あなたらしい働き方"
         />
         <div className="max-w-6xl mx-auto px-4">
@@ -666,85 +696,144 @@ function MainComponent() {
             className="space-y-8"
           >
             <div 
+              ref={section1Ref}
               className={`bg-white p-8 rounded-lg shadow transition-all duration-700 ${
                 contentInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ transitionDelay: '100ms' }}
             >
               <h3 className="text-2xl mb-4 font-bold">
-                新しい技術・スキルを営業内に学ぶことができます
+                大好きな美容師がもっと楽しめるようになる
               </h3>
               <div className="flex flex-col md:flex-row gap-4 md:gap-6">
-                <div className="w-full md:w-[400px] flex-shrink-0">
+                <div className="w-full md:w-[400px] flex-shrink-0 relative">
                   <Image
-                    src="/image/zikannai.JPG"
+                    src="/image/erarerukoto.JPG"
                     alt="スタッフの様子"
                     width={400}
                     height={300}
                     className="w-full h-[400px] md:h-[300px] rounded-lg object-cover"
                   />
+                  <div className="absolute inset-0 overflow-hidden">
+                    <Image
+                      src="/image/erarerukoto2.jpg"
+                      alt="スタッフの様子2"
+                      width={400}
+                      height={300}
+                      className="w-full h-[400px] md:h-[300px] rounded-lg object-cover opacity-0"
+                      style={{
+                        animation: startAnimation1 ? 'blurReveal 3s ease-in-out forwards' : 'none'
+                      }}
+                      priority={true}
+                    />
+                  </div>
                 </div>
                 <p className="text-base md:text-lg leading-relaxed">
-                  これにより、体と心に負担がかからず、家庭とお仕事の両立ができます。
-                  女性にゆとりができると家族の雰囲気もガラッと変わりますね。
-                  10年後、お子さまやパートナーからもリスペクトされる働き方を作りましょう。
-          
+                  これにより、疲弊する人間関係とはおさらば、本当の意味で信頼できる仲間に出会え生涯を通しての付き合いも。心にも余裕ができ プライベートも充実します。
                 </p>
               </div>
             </div>
 
             <div 
+              ref={section2Ref}
               className={`bg-white p-8 rounded-lg shadow transition-all duration-700 ${
                 contentInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ transitionDelay: '200ms' }}
             >
               <h3 className="text-2xl mb-4 font-bold">
-                現場以外のキャリアを叶えることができます
+                仕事で海外にいけるチャンスがある
               </h3>
               <div className="flex flex-col md:flex-row gap-4 md:gap-6">
-                <div className="w-full md:w-[400px] flex-shrink-0">
+                <div className="w-full md:w-[400px] flex-shrink-0 relative">
                   <Image
-                    src="/image/miga.jpg"
+                    src="/image/kaigai.jpg"
                     alt="スタッフの様子"
                     width={400}
                     height={300}
                     className="w-full h-[400px] md:h-[300px] rounded-lg object-cover"
                   />
+                  <div className="absolute inset-0 overflow-hidden">
+                    <Image
+                      src="/image/kaigai2.jpg"
+                      alt="スタッフの様子2"
+                      width={400}
+                      height={300}
+                      className="w-full h-[400px] md:h-[300px] rounded-lg object-cover opacity-0"
+                      style={{
+                        animation: startAnimation2 ? 'blurReveal 3s ease-in-out forwards' : 'none'
+                      }}
+                      priority={true}
+                    />
+                  </div>
+                  <div className="absolute inset-0 overflow-hidden">
+                    <Image
+                      src="/image/kaigai3.jpg"
+                      alt="スタッフの様子3"
+                      width={400}
+                      height={300}
+                      className="w-full h-[400px] md:h-[300px] rounded-lg object-cover opacity-0"
+                      style={{
+                        animation: startAnimation2 ? 'blurReveal 3s ease-in-out 3.5s forwards' : 'none'
+                      }}
+                      priority={true}
+                    />
+                  </div>
                 </div>
                 <p className="text-base md:text-lg leading-relaxed">
-                  これにより、急な体調のゆらぎが起こった場合はしばらくは在宅に切り替えたり、
-                  現場以外のメーカー部や企画広報部としてのお仕事で地域貢献もできます、
-                  弊社ではコンセプトの異なる4サロンを展開しているため、
-                  年齢や希望に沿った働き方を一緒に作っていきましょう。
-
+                  これにより、1人では中々叶えられないビジョンを会社と共叶えることができる。昨年はマレーシアでヘアメイクのお仕事をしました。今年は韓国にもお仕事で行く予定です！
                 </p>
               </div>
             </div>
 
             <div 
+              ref={section3Ref}
               className={`bg-white p-8 rounded-lg shadow transition-all duration-700 ${
                 contentInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
               style={{ transitionDelay: '300ms' }}
             >
               <h3 className="text-2xl mb-4 font-bold">
-                特化メニューの提供
+                CSR(社会貢献)にも積極的なので好きな仕事で貢献できるチャンスがある
               </h3>
               <div className="flex flex-col md:flex-row gap-4 md:gap-6">
-                <div className="w-full md:w-[400px] flex-shrink-0">
+                <div className="w-full md:w-[400px] flex-shrink-0 relative">
                   <Image
-                    src="/image/sezyutu.jpg"
+                    src="/image/kouken.jpg"
                     alt="スタッフの様子"
                     width={400}
                     height={300}
                     className="w-full h-[400px] md:h-[300px] rounded-lg object-cover"
                   />
+                  <div className="absolute inset-0 overflow-hidden">
+                    <Image
+                      src="/image/kouken2.jpg"
+                      alt="スタッフの様子2"
+                      width={400}
+                      height={300}
+                      className="w-full h-[400px] md:h-[300px] rounded-lg object-cover opacity-0"
+                      style={{
+                        animation: startAnimation3 ? 'blurReveal 3s ease-in-out forwards' : 'none'
+                      }}
+                      priority={true}
+                    />
+                  </div>
+                  <div className="absolute inset-0 overflow-hidden">
+                    <Image
+                      src="/image/kouken3.jpg"
+                      alt="スタッフの様子3"
+                      width={400}
+                      height={300}
+                      className="w-full h-[400px] md:h-[300px] rounded-lg object-cover opacity-0"
+                      style={{
+                        animation: startAnimation3 ? 'blurReveal 3s ease-in-out 3.5s forwards' : 'none'
+                      }}
+                      priority={true}
+                    />
+                  </div>
                 </div>
                 <p className="text-base md:text-lg leading-relaxed">
-                  「白髪老化ケア」という頭皮や髪を錆びさせずに、
-                  守り続ける施術を自社開発しました。
-                  これにより、お客様が失客せず、末永く施術することが可能になりました。
+                  これにより、毎日がHAPPYに！若いうちから社会貢献に触れることで人に優しく仲間想いにと、人間性が高められ波動の良い組織に入られます。
                 </p>
               </div>
             </div>
@@ -758,7 +847,7 @@ function MainComponent() {
             >
               <h3 className="text-2xl mb-6 font-bold text-center">
                 <span className="relative inline-block">
-                  現場仕事の日のとある1日
+                  現場仕事の日のとある1日（早番）
                   <span className="absolute -bottom-2 left-0 w-full h-1 bg-[#D3B58D]/30"></span>
                 </span>
               </h3>
@@ -766,12 +855,16 @@ function MainComponent() {
               <div className="max-w-2xl mx-auto">
                 <div className="space-y-4">
                   {[
-                    { time: "9:00", activity: "掃除、ミーティング" },
-                    { time: "9:30", activity: "オープン" },
-                    { time: "12:00", activity: "順々に昼休憩" },
-                    { time: "17:30", activity: "掃除開始" },
-                    { time: "18:00", activity: "退勤（残業なし）" },
+                    { time: "9:00", activity: "出勤＆朝練（朝練を推奨しています）" },
+                    { time: "9:30", activity: "掃除＆お花の水替え" },
+                    { time: "10:00", activity: "営業開始" },
+                    { time: "12:00", activity: "本日2人目のお客様（カットカラートリートメント２時間施術）" },
+                    { time: "14:00", activity: "お昼ご飯（随時順番に）" },
+                    { time: "16:00", activity: "おやつタイム（各店舗おやつボックスがある）" },
+                    { time: "18:30", activity: "早番帰りの掃除" },
+                    { time: "19:00", activity: "退勤" },
                   ].map((schedule, index) => (
+
                     <div 
                       key={index}
                       className="flex items-center gap-6 p-4 hover:bg-[#D3B58D]/5 rounded-lg transition-colors duration-300"
@@ -785,13 +878,7 @@ function MainComponent() {
                     </div>
                   ))}
                 </div>
-                
-                <div className="mt-8 p-4 bg-[#D3B58D]/10 rounded-lg">
-                  <p className="text-sm text-gray-600 text-center">
-                    ※ 施術は1日3名までを目安に予約を受け付けています。<br />
-                    ゆとりのある時間配分で、丁寧な施術を心がけています。
-                  </p>
-                </div>
+               
               </div>
             </div>
           </div>
@@ -803,9 +890,7 @@ function MainComponent() {
             >
               応募する
             </Link>
-            <button className="bg-[#06c755] text-white px-6 py-3 rounded-full hover:bg-[#059144] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0">
-              みんなの女将　千穂子からのメッセージを見る
-            </button>
+            
           </div>
         </div>
       </section>
@@ -838,49 +923,59 @@ function MainComponent() {
       {[
         {
           title: "勤務地",
-          content: "愛知県名古屋市名東区一社２丁目１４ エポック一社 1F"
+          content: "愛知県名古屋市中区丸の内2-19-19丸の内ヒルズ3F"
         },
         {
-          title: "雇用形態",
-          content: "正社員・パート・アルバイト・業務委託"
+          title: "募集職種",
+          content: "スタイリスト"
         },
         {
-          title: "職種・給与",
+          title: "募集形態",
+          content: "正社員、時短社員、パート"
+        },
+        {
+          title: "給与",
           content: (
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div>
-                <p className="font-medium">スタイリスト</p>
-                <ul className="list-disc list-inside ml-4 text-gray-600">
-                  <li>基本給 23万円</li>
-                  <li>歩合 35%</li>
-                  <li>店販 10% (他20%と30%)</li>
-                </ul>
+                <p className="font-medium mb-2">基本給</p>
+                <p className="text-gray-600">スタイリスト：215,000円～＋手当</p>
               </div>
               <div>
-                <p className="font-medium">トップスタイリスト</p>
-                <ul className="list-disc list-inside ml-4 text-gray-600">
-                  <li>基本給 25万円</li>
-                  <li>歩合 35%</li>
-                  <li>店販 10% (他20%と30%)</li>
-                </ul>
+                <p className="font-medium mb-2">歩合給例</p>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <p className="font-medium">技術売上110万円の場合</p>
+                  <p className="text-gray-600">110万-66万(基本給)÷1.1(消費税)×45%+23万(基本給)＝41万円</p>
+                </div>
+              </div>
+              <div>
+                <p className="font-medium mb-2">時短勤務の場合</p>
+                <div className="space-y-2 text-gray-600">
+                  <p>2時間時短：</p>
+                  <ul className="list-disc list-inside ml-4">
+                    <li>215,000円×6/8＝161,250円</li>
+                    <li>230,000円×6/8＝172,500円</li>
+                  </ul>
+                  <p>3時間時短：</p>
+                  <ul className="list-disc list-inside ml-4">
+                    <li>215,000円×5/8＝134,375円</li>
+                    <li>230,000円×5/8＝143,750円</li>
+                  </ul>
+                </div>
               </div>
             </div>
           )
         },
         {
-          title: "勤務時間",
-          content: "9時から18時"
-        },
-        {
           title: "休日",
           content: (
             <ul className="list-disc list-inside space-y-1 text-gray-600">
-              <li>日曜日</li>
-              <li>祝日定休</li>
-              <li>夏季休暇</li>
-              <li>お正月</li>
-              <li>フレキシブル休暇</li>
-              <li>慶弔休暇</li>
+              <li>完全週休2日</li>
+              <li>夏季休暇2日</li>
+              <li>自由休暇5日(11日)</li>
+              <li>年末年始5日</li>
+              <li>半休2日(有給1日)</li>
+              <li>土日休みあり</li>
             </ul>
           )
         },
@@ -889,44 +984,37 @@ function MainComponent() {
           content: (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <p className="font-medium mb-2">保険・手当</p>
                 <ul className="list-disc list-inside space-y-1 text-gray-600">
-                  <li>社会保険全て完備（雇用保険、健康保険、厚生年金）</li>
-                  <li>交通費支給</li>
-                  <li>健康診断無料</li>
-                  <li>入社時引越し手当</li>
-                  <li>住宅手当</li>
+                  <li>推し活応援</li>
+                  <li>早番＆遅番制度あり</li>
+                  <li>時短勤務あり</li>
+                  <li>交通費15,000円まで支給 ※店舗により車通勤サポートあり</li>
+                  <li>自転車通勤5,000円支給</li>
+                  <li>住宅手当10,000円支給</li>
+                  <li>役職手当10,000円支給</li>
+                  <li>子供手当あり（0-6歳：10,000円、7-15歳：5,000円）</li>
+                  <li>フリー入客も歩合率45%～</li>
                 </ul>
               </div>
               <div>
-                <p className="font-medium mb-2">研修・支援</p>
                 <ul className="list-disc list-inside space-y-1 text-gray-600">
-                  <li>講習費無料</li>
-                  <li>ヴィッグ支給</li>
-                  <li>制服支給（週1着用日があります）</li>
-                  <li>練習アプリ無料</li>
-                  <li>マネジメント＆コミュニケーション勉強会無料</li>
-                  <li>メイクレッスン補助</li>
-                  <li>着付けレッスン</li>
+                  <li>アイリスト兼任/歩合率10%</li>
+                  <li>ブライダル事業あり</li>
+                  <li>託児所付き/子供を預けて働ける</li>
+                  <li>ヘアスク導入サロン</li>
+                  <li>講習手当/半額支給</li>
+                  <li>予約状況で早上がり有り</li>
+                  <li>夜練ナシ朝練推奨/営業内に講習</li>
+                  <li>全席iPad完備/フルフラットユメスイー</li>
                 </ul>
+                <p className="mt-4 text-sm text-gray-500">※パートの場合は出勤日数や労働時間により待遇が異なります。</p>
               </div>
             </div>
           )
         },
         {
-          title: "その他",
-          content: (
-            <div className="flex items-center space-x-4">
-              <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#D3B58D]/10 text-gray-700">
-                <i className="fas fa-check mr-2 text-[#D3B58D]"></i>
-                有給100%消化
-              </span>
-              <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#D3B58D]/10 text-gray-700">
-                <i className="fas fa-check mr-2 text-[#D3B58D]"></i>
-                残業なし
-              </span>
-            </div>
-          )
+          title: "福利厚生",
+          content: "社会保険完備（健康保険/厚生年金/雇用保険/労災）"
         }
       ].map((item, index) => (
         <div 
@@ -966,16 +1054,16 @@ function MainComponent() {
           <div className="space-y-4">
             {[
               {
-                question: "技術に不安があっても大丈夫ですか？",
-                answer: "研修期間中は、営業時間内の６割がトレーニングです。オリジナルのアプリがありますのでそれを見てご自身の空いている時間に勉強ができます。"
+                question: "スタッフの年齢はどのくらいですか？",
+                answer: "店舗によってもかわりますが平均年齢25歳くらいの若い層が活躍しているサロンです。みんな仲良く推し活頑張ってます！"
               },
               {
                 question: "お客様の年齢層は？",
-                answer: "30〜60代の女性のみです。白髪染めやヘアケアに関心の高いお客様が中心です。"
+                answer: "20-30代がメイン層になります！カラー好きなスタッフが多くカラー比率は70%以上！髪質改善などのケア系カラーはもちろんですがデザインカラーも豊富です！"
               },
               {
                 question: "採用までの流れはどんな感じですか？",
-                answer: "まずzoomでオンライン面談をします。その後、サロン見学＆メニューの体験をしてご希望があれば面接をします。"
+                answer: "まずサロン見学に来て下さい！オーナーの永田が1人ずつしっかりお話しさせて頂きます。会社の考え方、理念などにしっかり共感できる方のみ採用させて頂きます。"
               },
               
             ].map((qa, index) => (
@@ -1027,37 +1115,33 @@ function MainComponent() {
                   />
                 </div>
                 <h3 className="text-xl font-bold mb-1">オーナー</h3>
-                <p className="text-gray-600 mb-6 md:mb-0">RONY</p>
+                <p className="text-gray-600 mb-6 md:mb-0">永田</p>
               </div>
               
               <div className="md:w-2/3">
                 <div className="prose prose-sm md:prose-lg max-w-none">
                   <p className="space-y-4 md:space-y-6">
                     <span className="block mb-4 md:mb-6 text-gray-800 text-base md:text-lg leading-relaxed">
-                      私は20代から美容師として現場に立つ中で40代以降の女性美容師が体力面や待遇面で疲弊し大好きな仕事を辞めていく姿をこれまでに何名も見てきました。
+                      皆さま、こんにちは。名古屋で「mallow」「re'll」「mallow eve」の3店舗を運営しております、オーナーの永田です。この度は、私たちのサロンにご興味を持っていただき、ありがとうございます。 私たちのサロンは、ただの美容院ではなく、スタッフ一人ひとりの「なりたい」「やりたい」を叶えられる場所でありたいと考えています。ここでは、お客様に最高の美容体験を提供することはもちろんですが、スタッフが自分らしく、そして充実した仕事をしていける環境を整えることを何より大切にしています。 
                     </span>
 
                     <span className="block mb-4 md:mb-6 text-gray-800 text-base md:text-lg leading-relaxed">
-                      落ち着いた接客ができ、お客様の痛みにも寄り添える優秀な40代女性美容師が辞めていくことは同じ美容師としても心が痛く「いつか自身の店舗を持った際には40代以降の女性美容師が疲弊することなく、むしろ年齢も"安心感"に繋がるようなさサロン作りをしたい」と決め、michillが誕生したのです。ここは、
+                      「美容師として技術を磨きたい」「もっとクリエイティブな仕事がしたい」「ライフスタイルに合わせた働き方がしたい」「美容師以外にも興味がある」
+                      — そんな思いを持った方にこそ、私たちのサロンはぴったりの場所だと自負しています。私たちは、スタッフ一人ひとりの成長を全力でサポートし、それぞれが持つ個性を活かして活躍できる環境を提供します。 
                     </span>
 
                     <span className="block mb-4 md:mb-6 text-gray-800 text-base md:text-lg leading-relaxed">
-                      ・40代以降のお客様がメインだからこそ、若い美容師よりも40代以降の美容師が求められる<br />
-                      ・同じ悩みを持つからこそ寄り添える<br />
-                      ・予約が混み合い、低単価の施術ではなく、白髪老化ケアを通じて高価値のメニューを提供でき、求められる美容師へ
+                      また、働き方についても、柔軟な選択肢を大切にしています。フルタイム勤務だけでなく、時短勤務やパートタイム、託児所(mallow kids)を併設しているので、お子さんを預けて働くこともできます！
+                      スタッフが自分のペースで働き、仕事とプライベートのバランスを取りながら、キャリアを築いていける環境を整えているので、どんな希望にも柔軟に対応できるように努めています。
+                    </span>
+s
+                    <span className="block mb-4 md:mb-6 text-gray-800 text-base md:text-lg leading-relaxed">
+                      さらに、当サロンでは技術だけではなく、人間力の向上も大切にしています。お客様に感動を与える美容師であり続けるために、日々学びながら成長できるチャンスがあります。
+                      例えば、定期的な勉強会やワークショップ、そしてスタッフ同士での交流を通じて、技術だけでなく、サロン内でのコミュニケーション力やチームワークも高めていきます。
                     </span>
 
                     <span className="block mb-4 md:mb-6 text-gray-800 text-base md:text-lg leading-relaxed">
-                      をコンセプトとし、現在では２名ではありますが、仲間を募集しています。
-                    </span>
-
-                    <span className="block mb-4 md:mb-6 text-gray-800 text-base md:text-lg leading-relaxed">
-                      数年ブランクがあっても、技術に自信が無くても結構です。<br />
-                      当店では現場以外のお仕事もしていただけるよう設計しています。
-                    </span>
-
-                    <span className="block text-gray-800 text-base md:text-lg leading-relaxed">
-                      まずは、働くにあたり弊社の説明も差し上げますのでご遠慮なく応募フォームまたはインスタよりDMをお待ちしております！
+                      私たちのサロンで働くということは、美容師としてだけでなく、一人の人間としても成長できるチャンスに満ちています。あなたの「なりたい自分」を実現し、共に成長していける場所がここにあります。 もし、少しでも興味を持っていただけたのであれば、ぜひ一度、サロンに足を運んでいただければと思います。お話を聞かせていただき、あなたが持つビジョンや目標にどう応えていけるか、一緒に考えていきたいと考えています。
                     </span>
                   </p>
                 </div>
@@ -1096,29 +1180,10 @@ function MainComponent() {
                     className="text-2xl hover:text-[#4a90e2]"
                   >
                     <i className="fab fa-instagram"></i>
-                    <span className="text-sm ml-2">代表ロニー</span>
+                    <span className="text-sm ml-2">代表永田</span>
                   </a>
                 </div>
-                <div className="relative w-full aspect-video rounded-lg overflow-hidden">
-                  <Image
-                    src="/image/dansu.png"
-                    alt="スタッフ全員でギリギリダンス"
-                    width={800}
-                    height={450}
-                    className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
-                  />
-                  <a 
-                    href="https://www.instagram.com/reel/DD_6XesPqB8/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/50 transition-colors duration-300"
-                  >
-                    <span className="text-white flex items-center gap-2">
-                      <i className="fab fa-instagram text-xl"></i>
-                      動画を見る
-                    </span>
-                  </a>
-                </div>
+                
               </div>
             </div>
             <div>
@@ -1150,52 +1215,16 @@ function MainComponent() {
         className={`fixed bottom-4 right-4 z-40 bg-gray-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-600 transition-all duration-300 ${
           showScrollTop ? 'opacity-100 visible' : 'opacity-0 invisible'
         }`}
-        aria-label="トップへ戻る"
       >
-        <svg 
-          className="w-6 h-6"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M5 15l7-7 7 7"
-          />
+        <span className="sr-only">トップへ戻る</span>
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
         </svg>
       </button>
     </div>
   );
 }
-// スタイリングの追加
-const styles = {
-  sectionTitle: `
-    relative
-    inline-block
-    text-2xl md:text-3xl lg:text-4xl
-    font-bold
-    text-center
-    pb-2
-    after:content-['']
-    after:absolute
-    after:bottom-0
-    after:left-1/2
-    after:transform
-    after:-translate-x-1/2
-    after:w-12
-    after:h-1
-    after:bg-rose-400
-  `,
-};
-
-MainComponent.propTypes = {
-  // 必要に応じてpropTypesを定義
-};
 
 export default function Home() {
   return <MainComponent />;
 }
-
