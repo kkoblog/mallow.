@@ -13,7 +13,11 @@ module.exports = {
       },
       animation: {
         fadeIn: 'fadeIn 1.5s ease-out forwards',
-      }
+      },
+      colors: {
+        background: '#fbfaf5',
+        accent: '#FFC6BD',
+      },
     }
   },
   plugins: []

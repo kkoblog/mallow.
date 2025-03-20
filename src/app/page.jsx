@@ -10,7 +10,7 @@ const SectionHeader = ({ title, subtitle }) => (
     <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-black">
       <span className="relative inline-block pb-4">
         {title}
-        <span className="absolute -bottom-2 left-0 w-full h-1 bg-[#D3B58D]"></span>
+        <span className="absolute -bottom-2 left-0 w-full h-1 bg-[#FFC6BD]"></span>
       </span>
     </h2>
     {subtitle && (
@@ -65,14 +65,14 @@ const InstagramEmbed = ({ url }) => {
   );
 };
 
-// スタッフカードコンポーネントの作成
-const StaffCard = ({ image, name, position, message, instagramUrl }) => {
+// スタッフカードコンポーネントを修正して動画対応を追加
+const StaffCard = ({ image, name, position, message, instagramUrl, videoUrl }) => {
   return (
     <div className="bg-[#f5f5f5] p-4 md:p-8 rounded-xl shadow-sm">
       <div className="bg-white/80 p-6 rounded-xl shadow-sm h-full flex flex-col">
         <div className="flex items-center space-x-2 mb-4">
-          <i className="fas fa-quote-left text-[#D3B58D] text-xl"></i>
-          <span className="text-[#D3B58D] font-medium"></span>
+          <i className="fas fa-quote-left text-[#FF998A] text-xl"></i>
+          <span className="text-[#FF998A] font-medium"></span>
         </div>
         
         <div className="flex items-center mb-6">
@@ -95,23 +95,20 @@ const StaffCard = ({ image, name, position, message, instagramUrl }) => {
           <p className="text-gray-700">
             {message}
           </p>
-          
-          <p className="text-gray-700">
-            でも<span className="font-bold text-[#D3B58D]">michillでは</span>、
-            <span className="bg-[#D3B58D]/10 px-2 py-1 rounded inline-block mt-1">
-              スタッフが快く対応してくれ、お客様への連絡も代わりにしてくれます。
-            </span>
-          </p>
-          
-          <p className="text-gray-700">
-            お客様も子育て経験者が多く理解があるので、
-            <span className="border-b-2 border-[#D3B58D]">
-              ママでも安心して美容師を続けられています！
-            </span>
-          </p>
         </div>
         
-        <InstagramEmbed url={instagramUrl} />
+        {videoUrl ? (
+          <div className="w-full aspect-video max-w-[500px] mx-auto">
+            <video 
+              src={videoUrl} 
+              controls 
+              className="w-full h-full rounded-lg"
+              preload="metadata"
+            />
+          </div>
+        ) : instagramUrl ? (
+          <InstagramEmbed url={instagramUrl} />
+        ) : null}
       </div>
     </div>
   );
@@ -126,7 +123,7 @@ const ImageSlideshow = () => {
       alt: "外観の様子"
     },
     {
-      src: "/image/naikan.jpg",
+      src: "/image/naisou.jpg",
       alt: "店内の様子"
     }
   ];
@@ -241,10 +238,10 @@ function MainComponent() {
 
   // 悩みセクションの各項目用のIntersectionObserver
   const concerns = [
-    "産後、低単価サロンなら簡単だと思い入社",
-    "教育時間は営業時間外で疲弊💦即戦力として求められる💦",
-    "自信がないまま、1人で5〜7名をこなさなければならず疲弊💦\n子どもが発熱、予約を代わってもらえず無理やり保育園へ入れる毎日💦",
-    "仕事をこなすことに精一杯で駒のように感じる💦",
+    "「人気サロンで技術を磨きたい」と思い入社したものの、先輩からの厳しい監視と指導で人間不信に💦",
+    "「推しのライブがあるから休みたい」と言えない雰囲気。休みを申請しても「みんな我慢してるから」と却下される毎日💦",
+    "「人から悪く思われたくない」という気持ちから無理をし続け、心身ともに疲弊。家庭の複雑な事情も相談できず孤独感が増す💦",
+    "「もっと頑張らないと」というプレッシャーで心が休まらない。重責を任されすぎてキャパオーバーになっても弱音を吐けない日々💦",
   ];
 
   const concernRefs = concerns.map(() => useInView({
@@ -345,38 +342,24 @@ function MainComponent() {
   const RequirementSection = () => {
     const requirements = [
       {
-        main: "仕事と家庭を両立したい方",
-        sub: "家庭が一番なので、仕事よりも家族を優先したい方"
+        main: "家族との時間を大切にしながらキャリアを築きたい方",
+        sub: "自社託児所完備・時短勤務OK・働く時間を選べる環境で、子育てと両立したい方"
       },
       {
-        main: "無理なく生涯現役で美容師を続けたい方",
-        sub: "1日3名までの丁寧な施術で、疲弊することなく働きたい方"
+        main: "花に囲まれた癒しの空間で高単価サロンを目指したい方",
+        sub: "名古屋唯一の花屋併設美容院で、平均単価¥15,000の高生産性を実現したい方"
       },
       {
-        main: "現場以外のキャリアも積んでいきたい方",
-        sub: "商品開発や企画広報などに挑戦したい方"
+        main: "早期スタイリストデビューと多彩なキャリアを望む方",
+        sub: "1-2年以内の確実なスタイリストデビューと、アイリスト・ブライダル事業など複数のスキルを身につけたい方"
       },
       {
-        main: "残業ゼロ・ゆとりある予約・数字を追わない仕事をしていきたい方",
-        sub: "心に余裕を持って働きたい方"
+        main: "会社からの手厚いサポートで売上アップを目指したい方",
+        sub: "最高レベルの集客サポートで、月200-300万円の売上実績を持つスタイリストから成功の秘訣を学びたい方"
       },
       {
-        main: "社会貢献や地域のイベントなどを、楽しんでやってみたい方",
-        sub: "美容師以外のことにもやりがりを持っていきたい方",
-        images: [
-          {
-            src: "/image/ibento.png",
-            alt: "社会貢献活動の様子1",
-            caption: "子ども美容室の取り組み",
-            description: "地域の子どもたちが美容師のお仕事を体験でき、クリエイティブな体験の場を提供"
-          },
-          {
-            src: "/image/sien.png",
-            alt: "社会貢献活動の様子2",
-            caption: "つばめ学習塾への寄付活動",
-            description: "これにより、塾に通えない子どもたちへの学習支援ができた"
-          }
-        ]
+        main: "自分のアイデアや「やりたい」を形にできる環境を求める方",
+        sub: "ネイル・エステ事業など新しい挑戦を応援する、みんなの「やりたい」を形にする会社で働きたい方"
       }
     ];
 
@@ -409,8 +392,8 @@ function MainComponent() {
               >
                 <div className="flex items-start space-x-4">
                   <div className="flex-shrink-0 mt-1">
-                    <div className="w-6 h-6 bg-[#D3B58D]/20 rounded-full flex items-center justify-center">
-                      <span className="text-black text-sm font-medium">
+                    <div className="w-6 h-6 bg-[#FF998A]/20 rounded-full flex items-center justify-center">
+                      <span className="text-[#FF998A] text-sm font-medium">
                         {index + 1}
                       </span>
                     </div>
@@ -422,28 +405,6 @@ function MainComponent() {
                     <p className="text-sm md:text-base text-gray-600">
                       {req.sub}
                     </p>
-                    {req.images && (
-                      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {req.images.map((img, imgIndex) => (
-                          <div key={imgIndex} className="space-y-2">
-                            <div className="relative aspect-video">
-                              <Image
-                                src={img.src}
-                                alt={img.alt}
-                                fill
-                                className="object-cover rounded-lg"
-                              />
-                            </div>
-                            <p className="text-sm text-gray-600 text-center font-medium">
-                              {img.caption}
-                            </p>
-                            <p className="text-sm text-gray-600 leading-relaxed">
-                              {img.description}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
@@ -480,11 +441,12 @@ function MainComponent() {
           
           
           <div className="relative">
-            <Image
-              src="/image/michill.jpg"
-              alt="明るく清潔感のあるサロン内装"
-              width={1200}
-              height={600}
+            <video
+              src="marouhead.MP4"
+              autoPlay
+              muted
+              loop
+              playsInline
               className="w-full h-[350px] md:h-[500px] object-cover rounded-lg shadow-lg"
             />
             
@@ -542,14 +504,17 @@ function MainComponent() {
       </div>
 
       <div className="mt-8 md:mt-12 px-4 max-w-6xl mx-auto">
-        <Image
-          src="/image/zentai.jpg"
-          alt="説明的な代替テキスト"
-          width={1200}
-          height={800}
-          className="w-full h-auto rounded-lg shadow-lg"
-          priority
-        />
+        <div className="text-center mb-4 text-xl md:text-2xl font-medium text-gray-800">
+          まずはこの3分動画をご覧ください
+        </div>
+        <div className="w-full aspect-video rounded-lg shadow-lg overflow-hidden">
+          <video 
+            src="/nagatasann.MP4" 
+            controls 
+            className="w-full h-full object-cover"
+            preload="metadata"
+          />
+        </div>
       </div>
 
       <section className="py-16 md:py-24 mt-8 md:mt-12">
@@ -561,18 +526,18 @@ function MainComponent() {
           <div className="grid grid-cols-2 gap-2 md:gap-8">
             {/* 左側: 一般的な美容室の悩み */}
             <div className="p-2 md:p-6 rounded-lg">
-              <h3 className="text-base md:text-xl font-bold text-center mb-3 md:mb-6 text-red-600">＜他店＞</h3>
+              <h3 className="text-base md:text-xl font-bold text-center mb-3 md:mb-6 text-gray-600">＜他店＞</h3>
               <div className="flex flex-col items-center gap-2 md:gap-4">
                 {concerns.map((concern, index) => (
                   <React.Fragment key={index}>
                     <div 
-                      className={`border-2 border-red-200 rounded-lg p-2 md:p-4 w-full text-center bg-white shadow-sm transition-all duration-500 text-xs md:text-base leading-relaxed whitespace-pre-line`}
+                      className={`border-2 border-gray-200 rounded-lg p-2 md:p-4 w-full text-center bg-white shadow-sm transition-all duration-500 text-xs md:text-base leading-relaxed whitespace-pre-line`}
                     >
                       {concern}
                     </div>
                     
                     {index < concerns.length - 1 && (
-                      <div className="text-red-400 text-base md:text-2xl">
+                      <div className="text-gray-400 text-base md:text-2xl">
                         ↓
                       </div>
                     )}
@@ -581,25 +546,25 @@ function MainComponent() {
               </div>
             </div>
 
-            {/* 右側: michillでの解決策 */}
+            {/* 右側: mallowでの解決策 */}
             <div className="p-2 md:p-6 rounded-lg">
-              <h3 className="text-base md:text-xl font-bold text-center mb-3 md:mb-6 text-[#D3B58D]">＜mallowの場合＞</h3>
+              <h3 className="text-base md:text-xl font-bold text-center mb-3 md:mb-6 text-[#FF998A]">＜mallowの場合＞</h3>
               <div className="flex flex-col items-center gap-2 md:gap-4">
                 {[
-                  "平均18,000円以上の高単価サロンでゆとりある予約状況✨",
-                  "教育終了後に3名程度でゆったり接客✨",
-                  "ママ美容師の先輩がいますので、みんなで予約をすぐに調整✨",
-                  "外部相談役も。心理的安全性を保ちながら地域に必要とされる存在へ共に✨"
+                  "厳しい監視や指導はなく、平均15,000円以上の高単価サロンで安定した環境。「恩送り」の理念のもと、受けた恩を次に繋ぎ互いを認め合う文化✨",
+                  "「休みを申請しても却下される」ことはなく、「推しのライブには行け」は当サロンの10か条の一つ。年間3〜4回のライブ参加OK！✨",
+                  "無理をし続ける必要はなく、「いいところを見つけよう」という文化が根付いています。本音で話せる仲間ができる環境✨",
+                  "プレッシャーや重責で疲弊することなく、心理的安全性を保ち、好きな美容師という仕事をより好きになり、周りにも幸せを配れます✨"
                 ].map((solution, index) => (
                   <React.Fragment key={index}>
                     <div 
-                      className={`border-2 border-[#D3B58D] rounded-lg p-2 md:p-4 w-full text-center bg-white shadow-sm transition-all duration-500 text-xs md:text-base leading-relaxed`}
+                      className={`border-2 border-[#FF998A] rounded-lg p-2 md:p-4 w-full text-center bg-white shadow-sm transition-all duration-500 text-xs md:text-base leading-relaxed`}
                     >
                       {solution}
                     </div>
                     
                     {index < 3 && (
-                      <div className="text-[#D3B58D] text-base md:text-2xl">
+                      <div className="text-[#FF998A] text-base md:text-2xl">
                         ↓
                       </div>
                     )}
@@ -615,10 +580,10 @@ function MainComponent() {
         <div className="absolute inset-0 bg-white/50"></div>
         
         <div className="relative z-10">
-          <h3 className="text-xl md:text-3xl font-bold text-center mb-6">
-            <span className="text-[#D3B58D]">mallowの特徴</span>
-            <br className="md:hidden" />
-          </h3>
+        <SectionHeader 
+          title="mallowの特徴"
+          
+        />
 
          
 <div className="mt-8 md:mt-12 px-4 max-w-6xl mx-auto">
@@ -643,7 +608,7 @@ function MainComponent() {
               }`}
               style={{ transitionDelay: '100ms' }}
             >
-              <span className="text-[#D3B58D] font-bold text-lg">①</span>
+              <span className="text-[#FF998A] font-bold text-lg">①</span>
               365日季節のお花に囲まれた、心安らぐ癒しの空間
               <br />
               <br />
@@ -658,7 +623,7 @@ function MainComponent() {
               }`}
               style={{ transitionDelay: '300ms' }}
             >
-              <span className="text-[#D3B58D] font-bold text-lg">②</span>
+              <span className="text-[#FF998A] font-bold text-lg">②</span>
               互いを認め合える、優しい仲間たち
               <br />
               <br />
@@ -673,7 +638,7 @@ function MainComponent() {
               }`}
               style={{ transitionDelay: '500ms' }}
             >
-              <span className="text-[#D3B58D] font-bold text-lg">③</span>
+              <span className="text-[#FF998A] font-bold text-lg">③</span>
               推しのために休める、充実の休暇制度
               <br />
               <br />
@@ -845,12 +810,11 @@ function MainComponent() {
                 contentInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
               }`}
             >
-              <h3 className="text-2xl mb-6 font-bold text-center">
-                <span className="relative inline-block">
-                  現場仕事の日のとある1日（早番）
-                  <span className="absolute -bottom-2 left-0 w-full h-1 bg-[#D3B58D]/30"></span>
-                </span>
-              </h3>
+              <SectionHeader 
+          title="現場仕事の日のとある1日（早番）"
+          
+        />
+              
               
               <div className="max-w-2xl mx-auto">
                 <div className="space-y-4">
@@ -870,7 +834,7 @@ function MainComponent() {
                       className="flex items-center gap-6 p-4 hover:bg-[#D3B58D]/5 rounded-lg transition-colors duration-300"
                     >
                       <div className="w-24 flex-shrink-0">
-                        <span className="font-bold text-[#D3B58D]">{schedule.time}</span>
+                        <span className="font-bold text-[#FF998A]">{schedule.time}</span>
                       </div>
                       <div className="flex-grow">
                         <span className="text-gray-700">{schedule.activity}</span>
@@ -896,6 +860,10 @@ function MainComponent() {
       </section>
 
       <section className="py-16 md:py-24">
+      <SectionHeader 
+          title="働く仲間へインタビュー"
+          subtitle="スタッフの声"
+        />
         
         <div className="max-w-5xl mx-auto px-4">
           <div className="space-y-8">
@@ -903,8 +871,7 @@ function MainComponent() {
               image="/image/aoi.jpg"
               name="あおい"
               position="入社4年目 / スタイリスト"
-              message={`4歳の子供がいるため、急な休みを取ることも...`}
-              instagramUrl="https://www.instagram.com/reel/C_7jiphvJ4I/embed"
+              videoUrl="/sutahhu.MP4"
             />
             {/* 必要に応じて追加のStaffCardを配置 */}
           </div>
@@ -1106,7 +1073,7 @@ function MainComponent() {
               <div className="md:w-1/3 flex flex-col items-center text-center">
                 <div className="w-40 h-40 md:w-64 md:h-64 overflow-hidden rounded-full border-4 border-white shadow-md mb-4">
                   <Image
-                    src="/image/roni.jpg"
+                    src="/image/nagata.jpg"
                     alt="オーナーの写真"
                     width={500}
                     height={500}
@@ -1164,17 +1131,9 @@ s
               </h3>
               <div className="flex flex-col space-y-4">
                 <div className="flex space-x-4">
+                  
                   <a 
-                    href="https://www.instagram.com/michill_hair/" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
-                    className="text-2xl hover:text-[#4a90e2]"
-                  >
-                    <i className="fab fa-instagram"></i>
-                    <span className="text-sm ml-2">サロン公式</span>
-                  </a>
-                  <a 
-                    href="https://www.instagram.com/rony_19795/" 
+                    href="https://www.instagram.com/mallow_nagata/" 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="text-2xl hover:text-[#4a90e2]"
@@ -1188,13 +1147,26 @@ s
             </div>
             <div>
               <h3 className="text-xl mb-4">店舗情報</h3>
-              <p>住所：〒465-0093 愛知県名古屋市名東区一社２丁目１４ エポック一社 1F</p>
-              <p>電話：052-784-9311</p>
-              <p>営業時間：9:30-18:00（土曜日は19:00まで）</p>
-              <p>定休日：日曜日</p>
+              <div className="mb-4">
+                <Image
+                  src="/image/zentai.jpg"
+                  alt="店舗外観"
+                  width={500}
+                  height={300}
+                  className="w-full h-auto rounded-lg"
+                />
+              </div>
+              <p>住所：〒460-0002 愛知県名古屋市中区丸の内2-19-19丸の内ヒルズ3F</p>
+              <p>電話：052-253-8467</p>
+              <p>営業時間：
+                <br />※最終受付時間となります。
+                <br />【火～土】10:00～20:00
+                <br />【日】10:00～18:00
+              </p>
+              <p>定休日：月曜日</p>
               <div className="mt-4 w-full h-[400px]">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3261.8601563414394!2d136.99768791744386!3d35.16786399999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x600365fabaac0805%3A0x49f414bdf1d872b!2z44Of44OB44Or!5e0!3m2!1sja!2sjp!4v1711603847736!5m2!1sja!2sjp"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3261.0551669939396!2d136.89851287619566!3d35.18857197275282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x600376e5cf4e2bb9%3A0xb8c55047e62e557b!2zmallow!5e0!3m2!1sja!2sjp!4v1711604847736!5m2!1sja!2sjp"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}

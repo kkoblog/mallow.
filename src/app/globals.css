@@ -8,10 +8,13 @@
   --color-deep-wood: #B09268;
   --color-text: #4A4A4A;
   --color-bg-light: #FAF7F2;
+  --background-color: #fbfaf5;
+  --accent-color: #FFC6BD;
 }
 
 body {
   color: var(--color-text);
+  background-color: var(--background-color);
 }
 
 .section-gradient {
@@ -96,4 +99,8 @@ body {
 
 .floating {
   animation: float 6s ease-in-out infinite;
+}
+
+.section-heading {
+  color: var(--color-deep-wood);
 }
