@@ -442,7 +442,7 @@ function MainComponent() {
           
           <div className="relative">
             <video
-              src="marouhead.MP4"
+              src="/farst.mp4"
               autoPlay
               muted
               loop
@@ -509,7 +509,7 @@ function MainComponent() {
         </div>
         <div className="w-full aspect-video rounded-lg shadow-lg overflow-hidden">
           <video 
-            src="/nagatasann.MP4" 
+            src="/nagatasan1.mp4" 
             controls 
             className="w-full h-full object-cover"
             preload="metadata"
@@ -871,7 +871,7 @@ function MainComponent() {
               image="/image/aoi.jpg"
               name="あおい"
               position="入社4年目 / スタイリスト"
-              videoUrl="/sutahhu.MP4"
+              videoUrl="/intabyu.mp4"
             />
             {/* 必要に応じて追加のStaffCardを配置 */}
           </div>
