@@ -416,11 +416,19 @@ function MainComponent() {
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-12">
             <Link 
               href="/contact" 
-              className="bg-[#e24a4a] text-white px-6 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0"
+              className="bg-[#e24a4a] text-white px-8 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-base w-64 text-center mx-auto"
             >
               応募する
             </Link>
             
+            <a 
+              href="https://salonjobs.hairbook.jp/salons/43562/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="bg-[#FF9E81] text-white px-8 py-3 rounded-full hover:bg-[#FF8A69] transition duration-300 text-base w-64 text-center mx-auto"
+            >
+              サロン詳細を見る
+            </a>
           </div>
         </div>
       </section>
@@ -465,7 +473,7 @@ function MainComponent() {
                 
                 <div className="relative">
                   <p className="text-2xl md:text-4xl lg:text-5xl font-medium opacity-0 blur-sm" id="blurText">
-                    <span className="inline-block">花屋併設の美容院 mallow（マロウ）</span>
+                    <span className="inline-block"><span className="text-xl md:text-3xl lg:text-4xl">花屋併設の美容院</span><br />mallow（マロウ）</span>
                   </p>
                   <style jsx>{`
                     #blurText {
@@ -494,13 +502,24 @@ function MainComponent() {
       <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-8">
         <Link 
           href="/contact" 
-          className="bg-[#e24a4a] text-white px-6 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0"
+          className="bg-[#e24a4a] text-white px-8 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-base w-64 text-center mx-auto"
         >
           応募する
         </Link>
-        <button className="bg-[#06c755] text-white px-6 py-3 rounded-full hover:bg-[#059144] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0">
-          代表永田からのメッセージを見る
+        <button 
+          onClick={() => scrollToSection('owner-message')} 
+          className="bg-[#06c755] text-white px-8 py-3 rounded-full hover:bg-[#059144] transition duration-300 text-base w-64 text-center mx-auto"
+        >
+          代表永田からの<br />メッセージを見る
         </button>
+        <a 
+          href="https://salonjobs.hairbook.jp/salons/43562/" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="bg-[#FF9E81] text-white px-8 py-3 rounded-full hover:bg-[#FF8A69] transition duration-300 text-base w-64 text-center mx-auto"
+        >
+          サロン詳細を見る
+        </a>
       </div>
 
       <div className="mt-8 md:mt-12 px-4 max-w-6xl mx-auto">
@@ -519,8 +538,8 @@ function MainComponent() {
 
       <section className="py-16 md:py-24 mt-8 md:mt-12">
         <SectionHeader 
-          title="世の中の女性美容師さんが抱える悩み事、当サロンでは一切致しません"
-          subtitle="現場で女性美容師さんを困らせること"
+          title="世の中の20代女性美容師さんが抱える悩み事、当サロンでは一切致しません"
+          subtitle="現場で困らせること"
         />
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-2 gap-2 md:gap-8">
@@ -673,7 +692,7 @@ function MainComponent() {
               <div className="flex flex-col md:flex-row gap-4 md:gap-6">
                 <div className="w-full md:w-[400px] flex-shrink-0 relative">
                   <Image
-                    src="/image/erarerukoto.JPG"
+                    src="/image/erarerukoto.jpg"
                     alt="スタッフの様子"
                     width={400}
                     height={300}
@@ -811,7 +830,7 @@ function MainComponent() {
               }`}
             >
               <SectionHeader 
-          title="現場仕事の日のとある1日（早番）"
+          title={<>サロンワークの<br />とある1日(早番)</>}
           
         />
               
@@ -819,12 +838,12 @@ function MainComponent() {
               <div className="max-w-2xl mx-auto">
                 <div className="space-y-4">
                   {[
-                    { time: "9:00", activity: "出勤＆朝練（朝練を推奨しています）" },
+                    { time: "9:00", activity: <>出勤＆朝練<br /><span className="text-xs">（朝練を推奨しています）</span></> },
                     { time: "9:30", activity: "掃除＆お花の水替え" },
                     { time: "10:00", activity: "営業開始" },
-                    { time: "12:00", activity: "本日2人目のお客様（カットカラートリートメント２時間施術）" },
-                    { time: "14:00", activity: "お昼ご飯（随時順番に）" },
-                    { time: "16:00", activity: "おやつタイム（各店舗おやつボックスがある）" },
+                    { time: "12:00", activity: <>本日2人目のお客様（<span className="text-sm">カットカラートリートメント２時間施術</span>）</> },
+                    { time: "14:00", activity: <>お昼ご飯<br /><span className="text-sm">（随時順番に）</span></> },
+                    { time: "16:00", activity: <>おやつタイム<br /><span className="text-sm">（各店舗おやつボックスがある）</span></> },
                     { time: "18:30", activity: "早番帰りの掃除" },
                     { time: "19:00", activity: "退勤" },
                   ].map((schedule, index) => (
@@ -850,13 +869,23 @@ function MainComponent() {
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-12">
             <Link 
               href="/contact" 
-              className="bg-[#e24a4a] text-white px-6 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-sm sm:text-base sm:px-8 w-fit mx-auto sm:mx-0"
+              className="bg-[#e24a4a] text-white px-8 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-base w-64 text-center mx-auto"
             >
               応募する
             </Link>
+            <a 
+          href="https://salonjobs.hairbook.jp/salons/43562/" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="bg-[#FF9E81] text-white px-8 py-3 rounded-full hover:bg-[#FF8A69] transition duration-300 text-base w-64 text-center mx-auto"
+        >
+          サロン詳細を見る
+        </a>
             
           </div>
+          
         </div>
+        
       </section>
 
       <section className="py-16 md:py-24">
@@ -869,8 +898,8 @@ function MainComponent() {
           <div className="space-y-8">
             <StaffCard 
               image="/image/aoi.jpg"
-              name="あおい"
-              position="入社4年目 / スタイリスト"
+              name="さら"
+              position="入社5年目 / スタイリスト"
               videoUrl="/intabyu.mp4"
             />
             {/* 必要に応じて追加のStaffCardを配置 */}
@@ -1062,7 +1091,7 @@ function MainComponent() {
         </div>
       </section>
 
-      <section className="py-12 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5">
+      <section className="py-12 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5" id="owner-message" ref={ownerRef}>
         <SectionHeader 
           title="オーナー挨拶"
           subtitle="Message from Owner"
@@ -1130,24 +1159,52 @@ s
                 Instagram
               </h3>
               <div className="flex flex-col space-y-4">
-                <div className="flex space-x-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <a 
+                    href="https://www.instagram.com/mallow_hair.flower?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex items-center hover:text-[#4a90e2] transition-colors"
+                  >
+                    <i className="fab fa-instagram text-xl mr-2"></i>
+                    <span className="text-sm">mallow公式</span>
+                  </a>
+                  
+                  <a 
+                    href="https://www.instagram.com/rell_hair.flower?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex items-center hover:text-[#4a90e2] transition-colors"
+                  >
+                    <i className="fab fa-instagram text-xl mr-2"></i>
+                    <span className="text-sm">re'll公式</span>
+                  </a>
+                  
+                  <a 
+                    href="https://www.instagram.com/mallow_eve_hair.flower?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="flex items-center hover:text-[#4a90e2] transition-colors"
+                  >
+                    <i className="fab fa-instagram text-xl mr-2"></i>
+                    <span className="text-sm">mallow eve公式</span>
+                  </a>
                   
                   <a 
                     href="https://www.instagram.com/mallow_nagata/" 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="text-2xl hover:text-[#4a90e2]"
+                    className="flex items-center hover:text-[#4a90e2] transition-colors"
                   >
-                    <i className="fab fa-instagram"></i>
-                    <span className="text-sm ml-2">代表永田</span>
+                    <i className="fab fa-instagram text-xl mr-2"></i>
+                    <span className="text-sm">代表永田</span>
                   </a>
                 </div>
-                
               </div>
             </div>
             <div>
               <h3 className="text-xl mb-4">店舗情報</h3>
-              <div className="mb-4">
+              <div className="mb-4 relative group">
                 <Image
                   src="/image/zentai.jpg"
                   alt="店舗外観"
@@ -1155,6 +1212,16 @@ s
                   height={300}
                   className="w-full h-auto rounded-lg"
                 />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg flex items-center justify-center">
+                  <a 
+                    href="https://salonjobs.hairbook.jp/salons/43562/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="bg-[#FF9E81] text-white px-6 py-2 rounded-full hover:bg-[#FF8A69] transition duration-300 text-base transform scale-90 group-hover:scale-100"
+                  >
+                    サロン詳細を見る
+                  </a>
+                </div>
               </div>
               <p>住所：〒460-0002 愛知県名古屋市中区丸の内2-19-19丸の内ヒルズ3F</p>
               <p>電話：052-253-8467</p>
@@ -1164,7 +1231,7 @@ s
                 <br />【日】10:00～18:00
               </p>
               <p>定休日：月曜日</p>
-              <div className="mt-4 w-full h-[400px]">
+              <div className="mt-4 w-full h-[300px] md:h-[400px]">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3261.0551669939396!2d136.89851287619566!3d35.18857197275282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x600376e5cf4e2bb9%3A0xb8c55047e62e557b!2zmallow!5e0!3m2!1sja!2sjp!4v1711604847736!5m2!1sja!2sjp"
                   width="100%"
