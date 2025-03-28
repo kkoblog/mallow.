@@ -37,6 +37,19 @@ export default function ApplicationForm() {
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#D3B58D] focus:border-[#D3B58D]"
             />
           </div>
+          <div>
+            <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-1">
+              年齢
+            </label>
+            <input
+              type="number"
+              id="age"
+              name="age"
+              min="18"
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-[#D3B58D] focus:border-[#D3B58D]"
+            />
+          </div>
 
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">

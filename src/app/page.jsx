@@ -418,7 +418,8 @@ function MainComponent() {
               href="/contact" 
               className="bg-[#e24a4a] text-white px-8 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-base w-64 text-center mx-auto"
             >
-              応募する
+              美容師＆保育士<br />
+              お問い合わせ
             </Link>
             
             <a 
@@ -427,7 +428,7 @@ function MainComponent() {
               rel="noopener noreferrer" 
               className="bg-[#FF9E81] text-white px-8 py-3 rounded-full hover:bg-[#FF8A69] transition duration-300 text-base w-64 text-center mx-auto"
             >
-              サロン詳細を見る
+              ママ美容師はこちら<br />サポート制度を見る
             </a>
           </div>
         </div>
@@ -455,20 +456,22 @@ function MainComponent() {
               muted
               loop
               playsInline
+              preload="auto"
+              loading="eager"
               className="w-full h-[350px] md:h-[500px] object-cover rounded-lg shadow-lg"
             />
             
             <div className="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center">
               <div className="text-white px-4 md:px-8 text-center space-y-8">
                 <p className="text-base md:text-2xl font-medium mb-6 opacity-0 animate-[fadeInUp_1s_ease-out_0.5s_forwards]">
-                  ＝＝＝＝＝＝＝＝<br />
-                  ＝＝＝＝＝＝＝＝<br />
-                  ＝＝＝＝＝＝＝＝
+                  花屋×美容室＝<br />
+                  "普通の2倍"チャンスに手を挙げてきた<br />
+                  君だからこそ。
                 </p>
                 
                 <p className="text-base md:text-xl leading-relaxed max-w-2xl mx-auto mb-6 opacity-0 animate-[fadeInUp_1s_ease-out_1.5s_forwards]">
-                  ＝＝＝＝＝＝＝<br />
-                  ＝＝＝＝＝＝＝＝＝
+                  1年後、周りの誰よりも輝き、<br />
+                  誰もが認める美容師になれる。
                 </p>
                 
                 <div className="relative">
@@ -504,7 +507,8 @@ function MainComponent() {
           href="/contact" 
           className="bg-[#e24a4a] text-white px-8 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-base w-64 text-center mx-auto"
         >
-          応募する
+          美容師＆保育士<br />
+          お問い合わせ
         </Link>
         <button 
           onClick={() => scrollToSection('owner-message')} 
@@ -518,7 +522,7 @@ function MainComponent() {
           rel="noopener noreferrer" 
           className="bg-[#FF9E81] text-white px-8 py-3 rounded-full hover:bg-[#FF8A69] transition duration-300 text-base w-64 text-center mx-auto"
         >
-          サロン詳細を見る
+          ママ美容師はこちら<br />サポート制度を見る
         </a>
       </div>
 
@@ -871,7 +875,8 @@ function MainComponent() {
               href="/contact" 
               className="bg-[#e24a4a] text-white px-8 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-base w-64 text-center mx-auto"
             >
-              応募する
+              美容師＆保育士<br />
+              お問い合わせ
             </Link>
             <a 
           href="https://salonjobs.hairbook.jp/salons/43562/" 
@@ -879,7 +884,7 @@ function MainComponent() {
           rel="noopener noreferrer" 
           className="bg-[#FF9E81] text-white px-8 py-3 rounded-full hover:bg-[#FF8A69] transition duration-300 text-base w-64 text-center mx-auto"
         >
-          サロン詳細を見る
+          ママ美容師はこちら<br />サポート制度を見る
         </a>
             
           </div>
