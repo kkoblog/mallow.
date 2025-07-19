@@ -12,7 +12,8 @@ export default function ContactPage() {
     message: '',
     licenses: [],
     position: '',
-    age: ''
+    age: '',
+    shortTimeWork: false // 追加
   });
   const [status, setStatus] = useState('');
 
@@ -40,7 +41,8 @@ export default function ContactPage() {
           message: '',
           licenses: [],
           position: '',
-          age: ''
+          age: '',
+          shortTimeWork: false
         });
       } else {
         const error = await response.json();
@@ -55,13 +57,20 @@ export default function ContactPage() {
     const { name, value, type, checked } = e.target;
     
     if (type === 'checkbox') {
-      // チェックボックスの場合
-      setFormData(prev => ({
-        ...prev,
-        licenses: checked
-          ? [...(prev.licenses || []), value]
-          : (prev.licenses || []).filter(item => item !== value)
-      }));
+      if (name === 'shortTimeWork') {
+        setFormData(prev => ({
+          ...prev,
+          shortTimeWork: checked
+        }));
+      } else {
+        // チェックボックスの場合
+        setFormData(prev => ({
+          ...prev,
+          licenses: checked
+            ? [...(prev.licenses || []), value]
+            : (prev.licenses || []).filter(item => item !== value)
+        }));
+      }
     } else {
       // その他のフォーム要素の場合
       setFormData(prev => ({
@@ -81,7 +90,7 @@ export default function ContactPage() {
         <h1 className="text-2xl font-bold mb-8 text-center">応募フォーム</h1>
         
         <form
-          action="mailto:dekanyon@icloud.com"
+          action="mailto:recruit@est-design22.com"
           method="post"
           encType="text/plain"
           onSubmit={(e) => {
@@ -101,12 +110,13 @@ export default function ContactPage() {
 経験年数: ${formData.experience}
 保有資格: ${licenses}
 現在のポジション: ${formData.position || '未選択'}
+時短勤務希望: ${formData.shortTimeWork ? 'あり' : 'なし'}
 メッセージ:
 ${formData.message}
             `.trim();
 
             // メールリンクを作成（UTF-8でエンコード）
-            const mailtoLink = `mailto:dekanyon@icloud.com?subject=${encodeURIComponent('採用に関するお問い合わせ')}&body=${encodeURIComponent(mailBody)}`;
+            const mailtoLink = `mailto:recruit@est-design22.com?subject=${encodeURIComponent('採用に関するお問い合わせ')}&body=${encodeURIComponent(mailBody)}`;
             
             // メールクライアントを開く
             window.location.href = mailtoLink;
@@ -268,6 +278,21 @@ ${formData.message}
                 </div>
               ))}
             </div>
+          </div>
+
+          {/* 時短勤務希望のチェックボックスを「不安などありますか？」の上に移動 */}
+          <div className="flex items-center mt-4">
+            <input
+              type="checkbox"
+              id="shortTimeWork"
+              name="shortTimeWork"
+              checked={formData.shortTimeWork}
+              onChange={handleChange}
+              className="h-4 w-4 text-indigo-600 border-gray-300 rounded"
+            />
+            <label htmlFor="shortTimeWork" className="ml-2 text-gray-700">
+              時短勤務希望
+            </label>
           </div>
 
           <div className="mt-6">

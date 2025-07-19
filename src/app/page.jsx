@@ -68,49 +68,46 @@ const InstagramEmbed = ({ url }) => {
 // スタッフカードコンポーネントを修正して動画対応を追加
 const StaffCard = ({ image, name, position, message, instagramUrl, videoUrl }) => {
   return (
-    <div className="bg-[#f5f5f5] p-4 md:p-8 rounded-xl shadow-sm">
-      <div className="bg-white/80 p-6 rounded-xl shadow-sm h-full flex flex-col">
-        <div className="flex items-center space-x-2 mb-4">
-          <i className="fas fa-quote-left text-[#FF998A] text-xl"></i>
-          <span className="text-[#FF998A] font-medium"></span>
-        </div>
-        
-        <div className="flex items-center mb-6">
-          <div className="w-24 h-24 md:w-28 md:h-28 overflow-hidden rounded-full border-4 border-white shadow-md mr-4 flex-shrink-0">
-            <Image
-              src={image}
-              alt={`スタッフ${name}`}
-              width={128}
-              height={128}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div>
-            <p className="font-bold text-lg">{name}</p>
-            <p className="text-sm text-gray-600">{position}</p>
-          </div>
-        </div>
-        
-        <div className="space-y-4 mb-6">
-          <p className="text-gray-700">
-            {message}
-          </p>
-        </div>
-        
-        {videoUrl ? (
-          <div className="w-full aspect-video max-w-[500px] mx-auto">
-            <video 
-              src={videoUrl} 
-              controls 
-              className="w-full h-full rounded-lg"
-              preload="metadata"
-            />
-          </div>
-        ) : instagramUrl ? (
-          <InstagramEmbed url={instagramUrl} />
-        ) : null}
+    <div className="flex flex-col items-center py-8">
+  {/* 画像：大きく、太めの#FF998Aボーダー */}
+
+  <div className="w-40 h-40 md:w-56 md:h-56 rounded-full border-[6px] border-[#f8f6f4] overflow-hidden flex items-center justify-center mb-6">
+    <Image
+      src={image}
+      alt={`スタッフ${name}`}
+      width={280}
+      height={280}
+      className="w-full h-full object-cover object-top rounded-full"
+    />
+  </div>
+  {/* 名前 */}
+  <div className="text-center">
+    <p className="text-[#FF998A] text-2xl md:text-3xl font-bold mb-1 tracking-wide">{name}</p>
+    <p className="text-gray-500 text-base md:text-lg mb-4">{position}</p>
+    {/* アンダーライン */}
+    <div className="w-16 h-1 bg-[#f8f6f4] mx-auto mb-6 rounded-full"></div>
+
+    {/* メッセージ（あれば） */}
+    {message && (
+      <p className="text-gray-700 mb-6">{message}</p>
+    )}
+    {/* 動画 or Instagram */}
+    {videoUrl && (
+      <div className="w-full max-w-[500px] mx-auto rounded-xl overflow-hidden mt-4">
+        <video 
+          src={videoUrl} 
+          controls 
+          className="w-full h-full"
+          preload="metadata"
+          poster="/image/sarasamune.png"
+        />
       </div>
-    </div>
+    )}
+    {instagramUrl && !videoUrl && (
+      <InstagramEmbed url={instagramUrl} />
+    )}
+  </div>
+</div>
   );
 };
 
@@ -182,6 +179,8 @@ const ImageSlideshow = () => {
 
 function MainComponent() {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  // 追従CTA表示制御用state
+  const [showFixedCTA, setShowFixedCTA] = useState(false);
 
   // 各セクションのIntersectionObserverを設定
   const [conceptRef, conceptInView] = useInView({
@@ -215,6 +214,18 @@ function MainComponent() {
     const handleScroll = () => {
       // 100px以上スクロールしたらボタンを表示
       setShowScrollTop(window.scrollY > 100);
+
+      // ファーストビュー（動画）の高さを取得
+      const firstView = document.querySelector('header');
+      if (firstView) {
+        const firstViewHeight = firstView.offsetHeight;
+        // 80%を過ぎたらCTA表示
+        if (window.scrollY > firstViewHeight * 0.8) {
+          setShowFixedCTA(true);
+        } else {
+          setShowFixedCTA(false);
+        }
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -232,16 +243,24 @@ function MainComponent() {
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      // ヘッダーの高さを考慮してオフセットを調整（必要に応じて調整）
+      const offset = 80; 
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
   };
 
   // 悩みセクションの各項目用のIntersectionObserver
   const concerns = [
-    "「人気サロンで技術を磨きたい」と思い入社したものの、先輩からの厳しい監視と指導で人間不信に💦",
-    "「推しのライブがあるから休みたい」と言えない雰囲気。休みを申請しても「みんな我慢してるから」と却下される毎日💦",
-    "「人から悪く思われたくない」という気持ちから無理をし続け、心身ともに疲弊。家庭の複雑な事情も相談できず孤独感が増す💦",
-    "「もっと頑張らないと」というプレッシャーで心が休まらない。重責を任されすぎてキャパオーバーになっても弱音を吐けない日々💦",
+    "「人気サロンで技術を磨きたい」と入社したが、先輩からの厳しい監視と指導で人間不信に",
+    "「推しのライブに行きたい」と休みを申請しても「みんな我慢してるのに」と却下される",
+    "「人から悪く思われたくない」という気持ちから無理をし続け、心身ともに疲弊",
+    "「もっと頑張らないと」というプレッシャーで心が休まらない。重責を任されすぎてキャパオーバー",
   ];
 
   const concernRefs = concerns.map(() => useInView({
@@ -414,22 +433,14 @@ function MainComponent() {
           
 
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-12">
-            <Link 
-              href="/contact" 
-              className="bg-[#e24a4a] text-white px-8 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-base w-64 text-center mx-auto"
-            >
-              美容師＆保育士<br />
-              お問い合わせ
-            </Link>
-            
             <a 
-              href="https://salonjobs.hairbook.jp/salons/43562/" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="bg-[#FF9E81] text-white px-8 py-3 rounded-full hover:bg-[#FF8A69] transition duration-300 text-base w-64 text-center mx-auto"
-            >
-              ママ美容師はこちら<br />サポート制度を見る
-            </a>
+          href="https://salonjobs.hairbook.jp/salons/43562/" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="bg-[#FF9E81] text-white px-8 py-3 rounded-full hover:bg-[#FF8A69] transition duration-300 text-base w-64 text-center mx-auto"
+        >
+          ママ美容師はこちら<br />サポート制度を見る
+        </a>
           </div>
         </div>
       </section>
@@ -445,86 +456,36 @@ function MainComponent() {
 
   return (
     <div className="font-noto-sans relative">
-      <header className="bg-[#fafafa] py-8 md:py-16 px-4 overflow-hidden">
-        <div className="max-w-6xl mx-auto text-center">
-          
-          
-          <div className="relative">
-            <video
-              src="/farst.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              loading="eager"
-              className="w-full h-[350px] md:h-[500px] object-cover rounded-lg shadow-lg"
-            />
-            
-            <div className="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center">
-              <div className="text-white px-4 md:px-8 text-center space-y-8">
-                <p className="text-base md:text-2xl font-medium mb-6 opacity-0 animate-[fadeInUp_1s_ease-out_0.5s_forwards]">
-                  花屋×美容室＝<br />
-                  "普通の2倍"チャンスに手を挙げてきた<br />
-                  君だからこそ。
-                </p>
-                
-                <p className="text-base md:text-xl leading-relaxed max-w-2xl mx-auto mb-6 opacity-0 animate-[fadeInUp_1s_ease-out_1.5s_forwards]">
-                  1年後、周りの誰よりも輝き、<br />
-                  誰もが認める美容師になれる。
-                </p>
-                
-                <div className="relative">
-                  <p className="text-2xl md:text-4xl lg:text-5xl font-medium opacity-0 blur-sm" id="blurText">
-                    <span className="inline-block"><span className="text-xl md:text-3xl lg:text-4xl">花屋併設の美容院</span><br />mallow（マロウ）</span>
-                  </p>
-                  <style jsx>{`
-                    #blurText {
-                      animation: blurReveal 2s ease-out 2s forwards;
-                    }
-                    
-                    @keyframes blurReveal {
-                      0% {
-                        opacity: 0;
-                        filter: blur(10px);
-                      }
-                      100% {
-                        opacity: 1;
-                        filter: blur(0);
-                      }
-                    }
-                  `}</style>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
+      <header className="relative bg-[#fafafa] p-0 m-0 overflow-hidden">
+        <video
+          src="/farst.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          loading="eager"
+          className="w-screen h-screen md:h-[500px] object-cover"
+          style={{ maxHeight: '100vh' }}
+        />
       </header>
 
-      <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-8">
-        <Link 
-          href="/contact" 
-          className="bg-[#e24a4a] text-white px-8 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-base w-64 text-center mx-auto"
-        >
-          美容師＆保育士<br />
-          お問い合わせ
-        </Link>
-        <button 
-          onClick={() => scrollToSection('owner-message')} 
-          className="bg-[#06c755] text-white px-8 py-3 rounded-full hover:bg-[#059144] transition duration-300 text-base w-64 text-center mx-auto"
-        >
-          代表永田からの<br />メッセージを見る
-        </button>
-        <a 
-          href="https://salonjobs.hairbook.jp/salons/43562/" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="bg-[#FF9E81] text-white px-8 py-3 rounded-full hover:bg-[#FF8A69] transition duration-300 text-base w-64 text-center mx-auto"
-        >
-          ママ美容師はこちら<br />サポート制度を見る
-        </a>
-      </div>
+      {/* 動画下にテキストを移動 */}
+      <section className="bg-white py-8 md:py-16 px-4 text-center">
+        <p className="text-base md:text-2xl font-medium mb-6">
+          "普通の2倍"チャンスに手を挙げてきた<br />
+          君だからこそ。
+        </p>
+        <p className="text-base md:text-xl leading-relaxed max-w-2xl mx-auto mb-6">
+          1年後、周りの誰よりも輝き、<br />
+          誰もが認める美容師になれる。
+        </p>
+        <p className="text-2xl md:text-4xl lg:text-5xl font-medium">
+          <span className="inline-block">
+            <span className="text-xl md:text-3xl lg:text-4xl">花屋併設の美容院</span><br />mallow（マロウ）
+          </span>
+        </p>
+      </section>
 
       <div className="mt-8 md:mt-12 px-4 max-w-6xl mx-auto">
         <div className="text-center mb-4 text-xl md:text-2xl font-medium text-gray-800">
@@ -536,6 +497,9 @@ function MainComponent() {
             controls 
             className="w-full h-full object-cover"
             preload="metadata"
+            poster="image/samune.png"
+            loading="eager"
+            playsInline
           />
         </div>
       </div>
@@ -574,10 +538,10 @@ function MainComponent() {
               <h3 className="text-base md:text-xl font-bold text-center mb-3 md:mb-6 text-[#FF998A]">＜mallowの場合＞</h3>
               <div className="flex flex-col items-center gap-2 md:gap-4">
                 {[
-                  "厳しい監視や指導はなく、平均15,000円以上の高単価サロンで安定した環境。「恩送り」の理念のもと、受けた恩を次に繋ぎ互いを認め合う文化✨",
-                  "「休みを申請しても却下される」ことはなく、「推しのライブには行け」は当サロンの10か条の一つ。年間3〜4回のライブ参加OK！✨",
-                  "無理をし続ける必要はなく、「いいところを見つけよう」という文化が根付いています。本音で話せる仲間ができる環境✨",
-                  "プレッシャーや重責で疲弊することなく、心理的安全性を保ち、好きな美容師という仕事をより好きになり、周りにも幸せを配れます✨"
+                  "厳しい監視や指導はなく、平均15,000円以上の高単価サロンで安定した環境",
+                  "「休みを申請しても却下される」ことはなく、「推しのライブには行け」は当サロンの10か条の一つ",
+                  "無理をし続ける必要はなく、「いいところを見つけよう」という環境",
+                  "プレッシャーや重責で疲弊することなく、心理的安全性を保ち、好きな美容師という仕事をより好きになり、周りにも幸せを配れるように"
                 ].map((solution, index) => (
                   <React.Fragment key={index}>
                     <div 
@@ -636,7 +600,7 @@ function MainComponent() {
               <br />
               <br />
               <span className="text-gray-700 text-sm md:text-base">
-                名古屋唯一の花屋併設美容院として、季節のお花に囲まれながら施術ができます。お花好きのお客様との自然な会話が生まれ、癒しの空間で心地よく働けます。お花に魅かれて来店されるお客様も多く、まるでお花カフェのような温かな雰囲気の中で、新しい美容師ライフをスタートできます。
+                名古屋唯一の<span className="bg-[#FF998A]/20 px-1">花屋併設美容院</span>として、季節のお花に囲まれながら施術ができます。お花好きのお客様との<span className="bg-[#FF998A]/20 px-1">自然な会話</span>が生まれ、癒しの空間で心地よく働けます。お花に魅かれて来店されるお客様も多く、<span className="bg-[#FF998A]/20 px-1">まるでお花カフェのような温かな雰囲気</span>の中で、新しい美容師ライフをスタートできます。
               </span>
             </div>
 
@@ -651,7 +615,7 @@ function MainComponent() {
               <br />
               <br />
               <span className="text-gray-700 text-sm md:text-base">
-                「誰かを批判するのではなく、いいところを見つけよう」という文化が根付いています。平均単価15,000円以上の安定した環境で、焦ることなく成長できます。新人教育も丁寧で、先輩からの過度な監視や重圧を感じることなく、安心して技術を磨けます。
+                <span className="bg-[#FF998A]/20 px-1">「誰かを批判するのではなく、いいところを見つけよう」</span>という文化が根付いています。<span className="bg-[#FF998A]/20 px-1">平均単価15,000円以上</span>の安定した環境で、焦ることなく成長できます。新人教育も丁寧で、<span className="bg-[#FF998A]/20 px-1">先輩からの過度な監視や重圧を感じることなく</span>、安心して技術を磨けます。
               </span>
             </div>
 
@@ -666,7 +630,7 @@ function MainComponent() {
               <br />
               <br />
               <span className="text-gray-700 text-sm md:text-base">
-                年間3〜4回のライブ参加ok！完全週休2日制と自由休暇5日でしっかりサポート。「推しのライブには行け」は当サロンの10か条の一つです。プライベートも仕事も大切にできる、あなたの理想の働き方を実現できます。
+                <span className="bg-[#FF998A]/20 px-1">年間3〜4回のライブ参加ok！</span>完全週休2日制と自由休暇5日でしっかりサポート。<span className="bg-[#FF998A]/20 px-1">「推しのライブには行け」</span>は当サロンの10か条の一つです。プライベートも仕事も大切にできる、あなたの理想の働き方を実現できます。
               </span>
             </div>
           </div>
@@ -871,13 +835,7 @@ function MainComponent() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mt-12">
-            <Link 
-              href="/contact" 
-              className="bg-[#e24a4a] text-white px-8 py-3 rounded-full hover:bg-[#bd3535] transition duration-300 text-base w-64 text-center mx-auto"
-            >
-              美容師＆保育士<br />
-              お問い合わせ
-            </Link>
+           
             <a 
           href="https://salonjobs.hairbook.jp/salons/43562/" 
           target="_blank" 
@@ -902,7 +860,7 @@ function MainComponent() {
         <div className="max-w-5xl mx-auto px-4">
           <div className="space-y-8">
             <StaffCard 
-              image="/image/aoi.jpg"
+              image="/image/sara.jpg"
               name="さら"
               position="入社5年目 / スタイリスト"
               videoUrl="/intabyu.mp4"
@@ -989,7 +947,7 @@ function MainComponent() {
                   <li>推し活応援</li>
                   <li>早番＆遅番制度あり</li>
                   <li>時短勤務あり</li>
-                  <li>交通費15,000円まで支給 ※店舗により車通勤サポートあり</li>
+                  <li>交通費15,000円まで支給</li>
                   <li>自転車通勤5,000円支給</li>
                   <li>住宅手当10,000円支給</li>
                   <li>役職手当10,000円支給</li>
@@ -1096,7 +1054,7 @@ function MainComponent() {
         </div>
       </section>
 
-      <section className="py-12 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5" id="owner-message" ref={ownerRef}>
+      <section className="py-12 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5" id="owner-message-title" ref={ownerRef}>
         <SectionHeader 
           title="オーナー挨拶"
           subtitle="Message from Owner"
@@ -1122,7 +1080,7 @@ function MainComponent() {
               <div className="md:w-2/3">
                 <div className="prose prose-sm md:prose-lg max-w-none">
                   <p className="space-y-4 md:space-y-6">
-                    <span className="block mb-4 md:mb-6 text-gray-800 text-base md:text-lg leading-relaxed">
+                    <span id="owner-message-start" className="block mb-4 md:mb-6 text-gray-800 text-base md:text-lg leading-relaxed">
                       皆さま、こんにちは。名古屋で「mallow」「re'll」「mallow eve」の3店舗を運営しております、オーナーの永田です。この度は、私たちのサロンにご興味を持っていただき、ありがとうございます。 私たちのサロンは、ただの美容院ではなく、スタッフ一人ひとりの「なりたい」「やりたい」を叶えられる場所でありたいと考えています。ここでは、お客様に最高の美容体験を提供することはもちろんですが、スタッフが自分らしく、そして充実した仕事をしていける環境を整えることを何より大切にしています。 
                     </span>
 
@@ -1238,7 +1196,7 @@ s
               <p>定休日：月曜日</p>
               <div className="mt-4 w-full h-[300px] md:h-[400px]">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3261.0551669939396!2d136.89851287619566!3d35.18857197275282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x600376e5cf4e2bb9%3A0xb8c55047e62e557b!2zmallow!5e0!3m2!1sja!2sjp!4v1711604847736!5m2!1sja!2sjp"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6522.638920676156!2d136.9003495!3d35.173589500000006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x600377415f82e4db%3A0xac398137b617330a!2smallow!5e0!3m2!1sja!2sjp!4v1743846532357!5m2!1sja!2sjp"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -1265,6 +1223,19 @@ s
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
         </svg>
       </button>
+
+      {/* 画面下部固定CTA（ファーストビュー80%過ぎたら表示） */}
+      {showFixedCTA && (
+        <div className="fixed bottom-0 left-0 w-full z-50">
+          <Link
+            href="/contact"
+            className="bg-[#e24a4a] text-white text-center text-base font-bold py-4 w-full block rounded-none hover:bg-[#bd3535] transition duration-300"
+            style={{ boxShadow: '0 -2px 8px rgba(0,0,0,0.08)' }}
+          >
+            美容師＆保育士<br />お問い合わせはこちら
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
