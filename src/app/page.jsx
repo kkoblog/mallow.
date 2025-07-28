@@ -1,8 +1,151 @@
-"use client";
-import React, { useState, useEffect } from 'react';
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 import Link from 'next/link';
+
+// モバイルヘッダーコンポーネント
+const MobileHeader = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      // ヘッダーの高さを考慮してオフセットを調整（56pxはヘッダーの高さ）
+      const offset = 56;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+      closeMenu(); // メニューを閉じる
+    }
+  };
+
+  return (
+    <>
+      {/* モバイルヘッダー */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md lg:hidden">
+        <div className="flex items-center justify-between px-4 py-3">
+          {/* ロゴ */}
+          <div className="flex items-center">
+            <Image
+              src="/image/logo.jpg"
+              alt="mallow"
+              width={180}
+              height={60}
+              className="h-12 w-auto"
+            />
+          </div>
+          
+          {/* ハンバーガーメニューボタン */}
+          <button
+            onClick={toggleMenu}
+            className="flex flex-col justify-center items-center w-8 h-8 relative"
+            aria-label="メニューを開く"
+          >
+            <span className={`absolute w-6 h-[2px] bg-gray-600 transition-all duration-300 ${
+              isMenuOpen ? 'rotate-45' : '-translate-y-[5px]'
+            }`}></span>
+            <span className={`absolute w-6 h-[2px] bg-gray-600 transition-all duration-300 ${
+              isMenuOpen ? 'opacity-0' : ''
+            }`}></span>
+            <span className={`absolute w-6 h-[2px] bg-gray-600 transition-all duration-300 ${
+              isMenuOpen ? '-rotate-45' : 'translate-y-[5px]'
+            }`}></span>
+          </button>
+        </div>
+
+        {/* モバイルメニュー */}
+        {isMenuOpen && (
+          <div className="fixed inset-0 z-40 lg:hidden">
+            {/* 背景オーバーレイ */}
+            <div 
+              className="absolute inset-0 bg-black bg-opacity-50"
+              onClick={closeMenu}
+            ></div>
+            
+            {/* メニューコンテンツ */}
+            <div className="absolute top-0 right-0 w-64 h-full bg-white shadow-lg">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-8">
+                  <Image
+                    src="/image/logo.jpg"
+                    alt="mallow"
+                    width={150}
+                    height={50}
+                    className="h-10 w-auto"
+                  />
+                  <button
+                    onClick={closeMenu}
+                    className="text-gray-500 hover:text-gray-700"
+                    aria-label="メニューを閉じる"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                
+                <nav className="space-y-4">
+                  {[
+                    { id: 'features', label: '特徴', delay: '100ms' },
+                    { id: 'benefits', label: '働くことで得られること', delay: '150ms' },
+                    { id: 'staff', label: 'スタッフ', delay: '200ms' },
+                    { id: 'requirements', label: '募集要項', delay: '250ms' },
+                    { id: 'qa', label: 'よくある質問', delay: '300ms' },
+                    { id: 'owner', label: 'オーナー挨拶', delay: '350ms' }
+                  ].map((item) => (
+                    <a 
+                      key={item.id}
+                      href={`#${item.id}`} 
+                      className="block py-3 text-gray-700"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        scrollToSection(item.id);
+                      }}
+                      style={{
+                        animation: `slideInFade 0.6s ease-out forwards ${item.delay}`,
+                        opacity: 0
+                      }}
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                </nav>
+                
+                <div className="mt-8 pt-6 border-t border-gray-200">
+                  <Link 
+                    href="/contact" 
+                    className="block w-full bg-[#FF9E81] text-white text-center py-3 rounded-lg hover:bg-[#FF8A69] transition duration-300"
+                    onClick={closeMenu}
+                    style={{
+                      animation: 'menuFadeIn 0.5s ease-out forwards 400ms',
+                      opacity: 0
+                    }}
+                  >
+                    お問い合わせ
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </header>
+    </>
+  );
+};
 
 // セクションヘッダーのコンポーネント化
 const SectionHeader = ({ title, subtitle }) => (
@@ -67,47 +210,71 @@ const InstagramEmbed = ({ url }) => {
 
 // スタッフカードコンポーネントを修正して動画対応を追加
 const StaffCard = ({ image, name, position, message, instagramUrl, videoUrl }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef(null);
+
+  const handleVideoClick = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
   return (
     <div className="flex flex-col items-center py-8">
-  {/* 画像：大きく、太めの#FF998Aボーダー */}
-
-  <div className="w-40 h-40 md:w-56 md:h-56 rounded-full border-[6px] border-[#f8f6f4] overflow-hidden flex items-center justify-center mb-6">
-    <Image
-      src={image}
-      alt={`スタッフ${name}`}
-      width={280}
-      height={280}
-      className="w-full h-full object-cover object-top rounded-full"
-    />
-  </div>
-  {/* 名前 */}
-  <div className="text-center">
-    <p className="text-[#FF998A] text-2xl md:text-3xl font-bold mb-1 tracking-wide">{name}</p>
-    <p className="text-gray-500 text-base md:text-lg mb-4">{position}</p>
-    {/* アンダーライン */}
-    <div className="w-16 h-1 bg-[#f8f6f4] mx-auto mb-6 rounded-full"></div>
-
-    {/* メッセージ（あれば） */}
-    {message && (
-      <p className="text-gray-700 mb-6">{message}</p>
-    )}
-    {/* 動画 or Instagram */}
-    {videoUrl && (
-      <div className="w-full max-w-[500px] mx-auto rounded-xl overflow-hidden mt-4">
-        <video 
-          src={videoUrl} 
-          controls 
-          className="w-full h-full"
-          preload="metadata"
-          poster="/image/sarasamune.png"
+      <div className="w-40 h-40 md:w-56 md:h-56 rounded-full border-[6px] border-[#f8f6f4] overflow-hidden flex items-center justify-center mb-6">
+        <Image
+          src={image}
+          alt={`スタッフ${name}`}
+          width={280}
+          height={280}
+          className="w-full h-full object-cover object-top rounded-full"
         />
       </div>
-    )}
-    {instagramUrl && !videoUrl && (
-      <InstagramEmbed url={instagramUrl} />
-    )}
-  </div>
-</div>
+      <div className="text-center">
+        <p className="text-[#FF998A] text-2xl md:text-3xl font-bold mb-1 tracking-wide">{name}</p>
+        <p className="text-gray-500 text-base md:text-lg mb-4">{position}</p>
+        <div className="w-16 h-1 bg-[#f8f6f4] mx-auto mb-6 rounded-full"></div>
+
+        {message && (
+          <p className="text-gray-700 mb-6">{message}</p>
+        )}
+        
+        {videoUrl && (
+          <div 
+            className="w-full max-w-[500px] mx-auto rounded-xl overflow-hidden mt-4 relative cursor-pointer"
+            onClick={handleVideoClick}
+          >
+            <video 
+              ref={videoRef}
+              src={videoUrl} 
+              controls={isPlaying}
+              className="w-full h-full object-cover object-left"
+              preload="metadata"
+              poster="/image/intabyusamune.png"
+              playsInline
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+            />
+            {!isPlaying && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-14 h-14 md:w-20 md:h-20 bg-white/80 rounded-full flex items-center justify-center">
+                  <div className="w-0 h-0 border-l-[20px] md:border-l-[30px] border-l-[#FF998A] border-y-[15px] md:border-y-[20px] border-y-transparent ml-1 md:ml-2"></div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+        
+        {instagramUrl && !videoUrl && (
+          <InstagramEmbed url={instagramUrl} />
+        )}
+      </div>
+    </div>
   );
 };
 
@@ -177,10 +344,126 @@ const ImageSlideshow = () => {
   );
 };
 
-function MainComponent() {
+// PCヘッダーコンポーネント
+const PCHeader = () => {
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  return (
+    <header className="hidden lg:block fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex items-center justify-between h-20">
+          {/* ロゴ */}
+          <div className="flex-shrink-0">
+            <Image
+              src="/image/logo.jpg"
+              alt="mallow"
+              width={240}
+              height={80}
+              className="h-16 w-auto"
+            />
+          </div>
+
+          {/* メインナビゲーション */}
+          <nav className="flex items-center space-x-8">
+            <a 
+              href="#features" 
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('features');
+              }}
+              className="text-gray-600 hover:text-[#FF998A] transition-colors duration-300 relative group py-2"
+            >
+              特徴
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#FF998A] transition-all duration-500 ease-out group-hover:w-full"></span>
+            </a>
+            <a 
+              href="#benefits" 
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('benefits');
+              }}
+              className="text-gray-600 hover:text-[#FF998A] transition-colors duration-300 relative group py-2"
+            >
+              働くことで得られること
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#FF998A] transition-all duration-500 ease-out group-hover:w-full"></span>
+            </a>
+            <a 
+              href="#staff" 
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('staff');
+              }}
+              className="text-gray-600 hover:text-[#FF998A] transition-colors duration-300 relative group py-2"
+            >
+              スタッフの声
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#FF998A] transition-all duration-500 ease-out group-hover:w-full"></span>
+            </a>
+            <a 
+              href="#requirements" 
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('requirements');
+              }}
+              className="text-gray-600 hover:text-[#FF998A] transition-colors duration-300 relative group py-2"
+            >
+              募集要項
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#FF998A] transition-all duration-500 ease-out group-hover:w-full"></span>
+            </a>
+
+            {/* 主要なCTAボタン */}
+            <div className="flex items-center space-x-4">
+              <a 
+                href="https://salonjobs.hairbook.jp/salons/43562/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="bg-[#FF9E81] text-white px-6 py-2 rounded-full hover:bg-[#FF8A69] transition duration-300"
+              >
+                採用情報を見る
+              </a>
+              <Link 
+                href="/contact" 
+                className="border-2 border-[#FF9E81] text-[#FF9E81] px-6 py-2 rounded-full hover:bg-[#FF9E81] hover:text-white transition duration-300"
+              >
+                お問い合わせ
+              </Link>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+// MainComponentの定義
+const MainComponent = () => {
   const [showScrollTop, setShowScrollTop] = useState(false);
   // 追従CTA表示制御用state
   const [showFixedCTA, setShowFixedCTA] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef(null);
+
+  const handleVideoClick = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   // 各セクションのIntersectionObserverを設定
   const [conceptRef, conceptInView] = useInView({
@@ -238,21 +521,6 @@ function MainComponent() {
       top: 0,
       behavior: 'smooth'
     });
-  };
-
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      // ヘッダーの高さを考慮してオフセットを調整（必要に応じて調整）
-      const offset = 80; 
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
   };
 
   // 悩みセクションの各項目用のIntersectionObserver
@@ -456,7 +724,13 @@ function MainComponent() {
 
   return (
     <div className="font-noto-sans relative">
-      <header className="relative bg-[#fafafa] p-0 m-0 overflow-hidden">
+      {/* PCヘッダー */}
+      <PCHeader />
+      
+      {/* モバイルヘッダー */}
+      <MobileHeader />
+
+      <header className="relative bg-[#fafafa] p-0 m-0 overflow-hidden mt-[48px] lg:mt-[80px]">
         <video
           src="/farst.mp4"
           autoPlay
@@ -487,24 +761,37 @@ function MainComponent() {
         </p>
       </section>
 
-      <div className="mt-8 md:mt-12 px-4 max-w-6xl mx-auto">
+      <div className="mt-8 md:mt-12 px-4 max-w-4xl mx-auto"> {/* max-w-6xlからmax-w-4xlに変更 */}
         <div className="text-center mb-4 text-xl md:text-2xl font-medium text-gray-800">
           まずはこの3分動画をご覧ください
         </div>
-        <div className="w-full aspect-video rounded-lg shadow-lg overflow-hidden">
+        <div 
+          className="w-full aspect-video rounded-lg shadow-lg overflow-hidden relative cursor-pointer max-w-3xl mx-auto" // max-w-3xl mx-autoを追加
+          onClick={handleVideoClick}
+        >
           <video 
+            ref={videoRef}
             src="/nagatasan1.mp4" 
-            controls 
-            className="w-full h-full object-cover"
+            controls={isPlaying}
+            className="w-full h-full object-cover object-left"
             preload="metadata"
-            poster="image/samune.png"
+            poster="/image/samune.png"
             loading="eager"
             playsInline
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
           />
+          {!isPlaying && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-14 h-14 md:w-20 md:h-20 bg-white/80 rounded-full flex items-center justify-center">
+                <div className="w-0 h-0 border-l-[20px] md:border-l-[30px] border-l-[#FF998A] border-y-[15px] md:border-y-[20px] border-y-transparent ml-1 md:ml-2"></div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
-      <section className="py-16 md:py-24 mt-8 md:mt-12">
+      <section className="py-16 md:py-24 mt-8 md:mt-12" id="concept">
         <SectionHeader 
           title="世の中の20代女性美容師さんが抱える悩み事、当サロンでは一切致しません"
           subtitle="現場で困らせること"
@@ -563,7 +850,7 @@ function MainComponent() {
         </div>
       </section>
 
-      <div className="mt-4 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5 rounded-3xl p-6 md:p-8 relative overflow-hidden">
+      <div className="mt-4 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5 rounded-3xl p-6 md:p-8 relative overflow-hidden" id="features">
         <div className="absolute inset-0 bg-white/50"></div>
         
         <div className="relative z-10">
@@ -637,7 +924,7 @@ function MainComponent() {
         </div>
       </div>
 
-      <section className="py-16 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5">
+      <section className="py-16 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5" id="benefits">
         <SectionHeader 
           title="mallowで働くことで得られる事"
           subtitle="あなたらしい働き方"
@@ -851,7 +1138,7 @@ function MainComponent() {
         
       </section>
 
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-24" id="staff">
       <SectionHeader 
           title="働く仲間へインタビュー"
           subtitle="スタッフの声"
@@ -872,7 +1159,7 @@ function MainComponent() {
 
     
 
-<section className="py-16 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5">
+<section className="py-16 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5" id="requirements">
   <SectionHeader 
     title="募集要項"
     subtitle="採用情報"
@@ -962,7 +1249,6 @@ function MainComponent() {
                   <li>託児所付き/子供を預けて働ける</li>
                   <li>ヘアスク導入サロン</li>
                   <li>講習手当/半額支給</li>
-                  <li>予約状況で早上がり有り</li>
                   <li>夜練ナシ朝練推奨/営業内に講習</li>
                   <li>全席iPad完備/フルフラットユメスイー</li>
                 </ul>
@@ -1054,7 +1340,7 @@ function MainComponent() {
         </div>
       </section>
 
-      <section className="py-12 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5" id="owner-message-title" ref={ownerRef}>
+      <section className="py-12 md:py-24 bg-gradient-to-r from-[#D3B58D]/10 to-[#D3B58D]/5" id="owner" ref={ownerRef}>
         <SectionHeader 
           title="オーナー挨拶"
           subtitle="Message from Owner"
@@ -1093,7 +1379,7 @@ function MainComponent() {
                       また、働き方についても、柔軟な選択肢を大切にしています。フルタイム勤務だけでなく、時短勤務やパートタイム、託児所(mallow kids)を併設しているので、お子さんを預けて働くこともできます！
                       スタッフが自分のペースで働き、仕事とプライベートのバランスを取りながら、キャリアを築いていける環境を整えているので、どんな希望にも柔軟に対応できるように努めています。
                     </span>
-s
+
                     <span className="block mb-4 md:mb-6 text-gray-800 text-base md:text-lg leading-relaxed">
                       さらに、当サロンでは技術だけではなく、人間力の向上も大切にしています。お客様に感動を与える美容師であり続けるために、日々学びながら成長できるチャンスがあります。
                       例えば、定期的な勉強会やワークショップ、そしてスタッフ同士での交流を通じて、技術だけでなく、サロン内でのコミュニケーション力やチームワークも高めていきます。
@@ -1112,7 +1398,7 @@ s
         </div>
       </section>
 
-      <footer className="bg-[#333] text-white py-8 md:py-16 px-4">
+      <footer className="bg-[#333] text-white py-8 md:py-16 px-4 pb-[100px] md:pb-[150px]">
         <div className="max-w-6xl mx-auto">
           
           <div className="grid md:grid-cols-2 gap-6 md:gap-8">
@@ -1212,21 +1498,11 @@ s
       </footer>
 
       {/* トップへ戻るボタン */}
-      <button
-        onClick={scrollToTop}
-        className={`fixed bottom-4 right-4 z-40 bg-gray-700 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-600 transition-all duration-300 ${
-          showScrollTop ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
-      >
-        <span className="sr-only">トップへ戻る</span>
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-        </svg>
-      </button>
+      
 
       {/* 画面下部固定CTA（ファーストビュー80%過ぎたら表示） */}
       {showFixedCTA && (
-        <div className="fixed bottom-0 left-0 w-full z-50">
+        <div className="fixed bottom-0 left-0 w-full z-50 lg:hidden">
           <Link
             href="/contact"
             className="bg-[#e24a4a] text-white text-center text-base font-bold py-4 w-full block rounded-none hover:bg-[#bd3535] transition duration-300"
@@ -1238,8 +1514,12 @@ s
       )}
     </div>
   );
-}
+};
 
-export default function Home() {
+// MainComponentをエクスポート
+
+const Page = () => {
   return <MainComponent />;
-}
+};
+
+export default Page;
